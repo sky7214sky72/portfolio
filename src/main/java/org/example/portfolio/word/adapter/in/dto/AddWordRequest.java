@@ -1,4 +1,4 @@
-package org.example.portfolio.word;
+package org.example.portfolio.word.adapter.in.dto;
 
 import org.springframework.util.Assert;
 
