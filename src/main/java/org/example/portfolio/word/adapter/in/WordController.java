@@ -6,6 +6,7 @@ import org.example.portfolio.word.application.service.WordService;
 import org.example.portfolio.word.domain.Word;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ public class WordController {
   private final WordService wordService;
 
   @PostMapping
+  @Transactional
   public ResponseEntity<Void> addWord(@RequestBody final AddWordRequest addWordRequest) {
     final Word word = new Word(addWordRequest.word(), addWordRequest.mean());
     wordService.save(word);

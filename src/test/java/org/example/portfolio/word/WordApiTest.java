@@ -17,6 +17,12 @@ public class WordApiTest extends ApiTest {
   void 단어등록() {
     AddWordRequest addWordRequest = 상품등록요청_생성();
     // API 요청
+    final ExtractableResponse<Response> response = 상품등록요청(addWordRequest);
+    assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+  }
+
+  private static ExtractableResponse<Response> 상품등록요청(
+      AddWordRequest addWordRequest) {
     final ExtractableResponse<Response> response = RestAssured.given().log().all()
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .body(addWordRequest)
@@ -24,7 +30,7 @@ public class WordApiTest extends ApiTest {
         .post("/words")
         .then()
         .log().all().extract();
-    assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+    return response;
   }
 
   private static AddWordRequest 상품등록요청_생성() {

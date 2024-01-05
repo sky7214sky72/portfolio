@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/portfolio
+    url: jdbc:postgresql://localhost:5432/portfolio?currentSchema=english_study_web
     username: user
     password: secret
     driver-class-name: org.postgresql.Driver
