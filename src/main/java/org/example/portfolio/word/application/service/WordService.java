@@ -12,9 +12,13 @@ public class WordService implements WordPort {
 
   private final WordRepository wordRepository;
 
-
   @Override
   public void save(final Word word) {
     wordRepository.save(word);
+  }
+
+  @Override
+  public Word getWord(long wordId) {
+    return wordRepository.findById(wordId).orElseThrow(() -> new IllegalArgumentException("단어가 존재하지 않습니다."));
   }
 }

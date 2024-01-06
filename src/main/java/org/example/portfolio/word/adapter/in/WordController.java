@@ -1,7 +1,8 @@
 package org.example.portfolio.word.adapter.in;
 
 import lombok.RequiredArgsConstructor;
-import org.example.portfolio.word.adapter.in.dto.AddWordRequest;
+import org.example.portfolio.word.adapter.in.dto.request.AddWordRequest;
+import org.example.portfolio.word.adapter.in.dto.response.GetWordResponse;
 import org.example.portfolio.word.application.service.WordService;
 import org.example.portfolio.word.domain.Word;
 import org.springframework.http.HttpStatus;
@@ -25,5 +26,14 @@ public class WordController {
     final Word word = new Word(addWordRequest.word(), addWordRequest.mean());
     wordService.save(word);
     return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  public GetWordResponse getWord(final long wordId) {
+    final Word word = wordService.getWord(wordId);
+    return new GetWordResponse(
+        word.getId(),
+        word.getWord(),
+        word.getMean()
+    );
   }
 }

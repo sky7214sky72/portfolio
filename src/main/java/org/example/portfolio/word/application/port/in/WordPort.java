@@ -5,4 +5,6 @@ import org.example.portfolio.word.domain.Word;
 public interface WordPort {
 
   void save(final Word word);
+
+  Word getWord(long wordId);
 }
