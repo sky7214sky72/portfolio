@@ -37,11 +37,6 @@ public class WordService implements WordPort {
 
   @Override
   public Page<GetWordResponse> getWordList(String keyword, int page, int size) {
-    return StringUtils.hasText(keyword) ? wordRepository.findByWordOrMean(keyword,
-        PageRequest.of(page, size)).map(this::mapToResponse) : wordRepository.findAll(PageRequest.of(page, size)).map(this::mapToResponse);
-  }
-
-  private GetWordResponse mapToResponse(Word word) {
-    return new GetWordResponse(word.getId(), word.getWord(), word.getMean());
+    return wordRepository.getWordList(keyword, PageRequest.of(page, size));
   }
 }

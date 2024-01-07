@@ -9,13 +9,12 @@ import java.util.List;
 import org.example.portfolio.ApiTest;
 import org.example.portfolio.word.adapter.in.dto.request.AddWordRequest;
 import org.example.portfolio.word.adapter.in.dto.response.GetWordResponse;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 public class WordApiTest extends ApiTest {
 
-  @BeforeEach
+  @Test
   void 단어등록() {
     List<AddWordRequest> addWordRequestList = WordSteps.단어등록요청_생성();
     // API 요청
