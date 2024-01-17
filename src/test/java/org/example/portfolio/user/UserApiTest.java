@@ -8,6 +8,7 @@ import io.restassured.response.Response;
 import org.example.portfolio.ApiTest;
 import org.example.portfolio.user.adapter.in.dto.request.SignUpRequest;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -17,6 +18,7 @@ public class UserApiTest extends ApiTest {
   void 회원가입() {
     SignUpRequest request = UserSteps.회원가입정보_생성();
     final ExtractableResponse<Response> response = RestAssured.given().log().all()
+        .disableCsrf()
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .body(request)
         .when()

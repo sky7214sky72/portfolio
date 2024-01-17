@@ -26,8 +26,7 @@ public class SecurityConfig {
     //이 프로젝트는 쿠키와 세션을 사용하지 않기 때문에 세션 생성 정책을 STATELESS로 설정하고, CSRF도 비활성화 한다.
     return http
         .csrf(AbstractHttpConfigurer::disable)
-        .headers((headerConfig) -> headerConfig.frameOptions(
-            FrameOptionsConfig::disable))
+        .headers((headerConfig) -> headerConfig.frameOptions(FrameOptionsConfig::sameOrigin))
         .authorizeHttpRequests(requests ->
             requests.requestMatchers(allowedUrls)
                 .permitAll()  // requestMatchers의 인자로 전달된 url은 모두에게 허용

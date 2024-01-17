@@ -1,8 +1,11 @@
 spring:
   profiles:
     include: oauth
+  security:
+    user:
+      password: 1
   datasource:
-    url: jdbc:h2:mem:test;INIT=CREATE SCHEMA IF NOT EXISTS ENGLISH_STUDY_WEB\;CREATE SCHEMA IF NOT EXISTS ENGLISH_STUDY_WEB
+    url: jdbc:h2:mem:test;NON_KEYWORDS=USER;INIT=CREATE SCHEMA IF NOT EXISTS ENGLISH_STUDY_WEB\;CREATE SCHEMA IF NOT EXISTS ENGLISH_STUDY_WEB
     driver-class-name: org.h2.Driver
     username: sa
     password: password
