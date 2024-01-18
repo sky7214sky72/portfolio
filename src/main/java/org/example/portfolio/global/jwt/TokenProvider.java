@@ -29,6 +29,15 @@ public class TokenProvider {
     this.issuer = issuer;
   }
 
+  public String validateTokenAndGetSubject(String token) {
+    return Jwts.parserBuilder()
+        .setSigningKey(secretKey.getBytes())
+        .build()
+        .parseClaimsJws(token)
+        .getBody()
+        .getSubject();
+  }
+
   public String createToken(String userSpecification) {
     return Jwts.builder()
         .signWith(new SecretKeySpec(secretKey.getBytes(), SignatureAlgorithm.HS512.getJcaName()))   // HS512 알고리즘을 사용하여 secretKey를 이용해 서명

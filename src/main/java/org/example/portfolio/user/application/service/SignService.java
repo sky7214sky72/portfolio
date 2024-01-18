@@ -1,5 +1,6 @@
 package org.example.portfolio.user.application.service;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.example.portfolio.global.jwt.TokenProvider;
 import org.example.portfolio.user.adapter.in.dto.request.SignInRequest;
@@ -8,13 +9,15 @@ import org.example.portfolio.user.adapter.in.dto.response.SignInResponse;
 import org.example.portfolio.user.application.port.in.SignPort;
 import org.example.portfolio.user.application.port.out.SignRepository;
 import org.example.portfolio.user.domain.User;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class SignService implements SignPort {
 
   private final SignRepository signRepository;
@@ -22,11 +25,18 @@ public class SignService implements SignPort {
   private final TokenProvider tokenProvider;
 
   @Override
-  public void signUp(SignUpRequest request) {
-    signRepository.save(User.from(request, passwordEncoder));
+  @Transactional
+  public ResponseEntity<Object> signUp(SignUpRequest request) {
+    if (signRepository.existsByMail(request.mail())) {
+      String errorMessage = "이미 사용중인 이메일입니다.";
+      return ResponseEntity.badRequest().body(errorMessage);
+    }
+    User user = signRepository.save(User.from(request, passwordEncoder));
+    return ResponseEntity.status(HttpStatus.CREATED).body(user);
   }
 
   @Override
+  @Transactional
   public SignInResponse signIn(SignInRequest request) {
     User user = signRepository.findByMail(request.mail())
         .filter(f -> passwordEncoder.matches(request.password(), f.getPassword()))

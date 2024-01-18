@@ -24,9 +24,8 @@ public class SignController {
 
   @Operation(summary = "회원 가입")
   @PostMapping("/sign-up")
-  public ResponseEntity<Void> signUp(@RequestBody SignUpRequest request) {
-    signService.signUp(request);
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+  public ResponseEntity<Object> signUp(@RequestBody SignUpRequest request) {
+    return signService.signUp(request);
   }
 
   @Operation(summary = "로그인")
