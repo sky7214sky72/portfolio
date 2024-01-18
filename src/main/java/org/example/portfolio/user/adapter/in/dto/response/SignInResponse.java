@@ -5,8 +5,8 @@ import org.example.portfolio.global.domain.MemberType;
 
 public record SignInResponse(@Schema(description = "회원 이름", example = "콜라곰")
                              String name,
-                             @Schema(description = "회원 유형", example = "USER")
-                             MemberType type,
+                             @Schema(description = "메일 주소", example = "cws070993@gmail.com")
+                             String mail,
                              String token) {
 
 }

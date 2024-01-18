@@ -1,8 +1,10 @@
 package org.example.portfolio.user.application.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.portfolio.global.jwt.TokenProvider;
 import org.example.portfolio.user.adapter.in.dto.request.SignInRequest;
 import org.example.portfolio.user.adapter.in.dto.request.SignUpRequest;
+import org.example.portfolio.user.adapter.in.dto.response.SignInResponse;
 import org.example.portfolio.user.application.port.in.SignPort;
 import org.example.portfolio.user.application.port.out.SignRepository;
 import org.example.portfolio.user.domain.User;
@@ -17,6 +19,7 @@ public class SignService implements SignPort {
 
   private final SignRepository signRepository;
   private final PasswordEncoder passwordEncoder;
+  private final TokenProvider tokenProvider;
 
   @Override
   public void signUp(SignUpRequest request) {
@@ -24,7 +27,11 @@ public class SignService implements SignPort {
   }
 
   @Override
-  public void signIn(SignInRequest request) {
-
+  public SignInResponse signIn(SignInRequest request) {
+    User user = signRepository.findByMail(request.mail())
+        .filter(f -> f.getPassword().equals(request.password()))
+        .orElseThrow(() -> new IllegalArgumentException("아이디 비밀번호가 일치하지 않습니다."));
+    String token = tokenProvider.createToken(String.format("%s:%s", user.getId(), user.getType()));
+    return new SignInResponse(user.getName(), user.getMail(), token);
   }
 }

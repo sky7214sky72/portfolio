@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.example.portfolio.user.adapter.in.dto.request.SignInRequest;
 import org.example.portfolio.user.adapter.in.dto.request.SignUpRequest;
+import org.example.portfolio.user.adapter.in.dto.response.SignInResponse;
 import org.example.portfolio.user.application.service.SignService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping
 public class SignController {
+
   private final SignService signService;
 
   @Operation(summary = "회원 가입")
@@ -29,8 +31,7 @@ public class SignController {
 
   @Operation(summary = "로그인")
   @PostMapping("/sign-in")
-  public ResponseEntity<Void> signIn(@RequestBody SignInRequest request) {
-    signService.signIn(request);
-    return ResponseEntity.status(HttpStatus.CREATED).build();
+  public ResponseEntity<SignInResponse> signIn(@RequestBody SignInRequest request) {
+    return ResponseEntity.ok(signService.signIn(request));
   }
 }

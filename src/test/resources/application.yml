@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: oauth
+    include: oauth, jwt
   security:
     user:
       password: 1
