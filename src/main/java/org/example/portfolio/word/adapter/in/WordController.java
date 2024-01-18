@@ -2,6 +2,8 @@ package org.example.portfolio.word.adapter.in;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.portfolio.global.annotation.AdminAuthorize;
+import org.example.portfolio.global.annotation.UserAuthorize;
 import org.example.portfolio.word.adapter.in.dto.request.AddWordRequest;
 import org.example.portfolio.word.adapter.in.dto.response.GetWordResponse;
 import org.example.portfolio.word.application.service.WordService;
@@ -25,6 +27,7 @@ public class WordController {
 
   private final WordService wordService;
 
+  @AdminAuthorize
   @PostMapping
   @Transactional
   public ResponseEntity<Void> addWord(@RequestBody final List<AddWordRequest> addWordRequest) {
@@ -32,6 +35,7 @@ public class WordController {
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
+  @UserAuthorize
   @GetMapping("/{wordId}")
   public ResponseEntity<GetWordResponse> getWord(@PathVariable final long wordId) {
     final Word word = wordService.getWord(wordId);
@@ -43,6 +47,7 @@ public class WordController {
     return ResponseEntity.ok(response);
   }
 
+  @UserAuthorize
   @GetMapping
   public ResponseEntity<Page<GetWordResponse>> getWordList(@RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size,

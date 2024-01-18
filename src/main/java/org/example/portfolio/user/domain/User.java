@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.portfolio.global.domain.BaseTimeEntity;
+import org.example.portfolio.global.domain.MemberType;
 import org.example.portfolio.user.adapter.in.dto.request.SignUpRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -32,6 +33,7 @@ public class User extends BaseTimeEntity {
 
   public static User from(SignUpRequest signUpRequest, PasswordEncoder passwordEncoder) {
     return User.builder()
+        .type(MemberType.USER.name())
         .mail(signUpRequest.mail())
         .name(signUpRequest.name())
         .password(passwordEncoder.encode(signUpRequest.password()))
