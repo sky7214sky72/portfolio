@@ -7,7 +7,6 @@ import io.restassured.response.Response;
 import org.example.portfolio.ApiTest;
 import org.example.portfolio.user.adapter.in.dto.request.SignInRequest;
 import org.example.portfolio.user.adapter.in.dto.request.SignUpRequest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 

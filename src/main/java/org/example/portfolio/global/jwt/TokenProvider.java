@@ -17,13 +17,13 @@ import org.springframework.stereotype.Service;
 public class TokenProvider {
 
   private final String secretKey;
-  private final String expirationHours;
+  private final long expirationHours;
   private final String issuer;
 
   public TokenProvider(
-      @Value("{secret-key}") String secretKey,
-      @Value("{expiration-hours}") String expirationHours,
-      @Value("{issuer}") String issuer) {
+      @Value("${secret-key}") String secretKey,
+      @Value("${expiration-hours}") long expirationHours,
+      @Value("${issuer}") String issuer) {
     this.secretKey = secretKey;
     this.expirationHours = expirationHours;
     this.issuer = issuer;
@@ -35,7 +35,7 @@ public class TokenProvider {
         .setSubject(userSpecification)  // JWT 토큰 제목
         .setIssuer(issuer)  // JWT 토큰 발급자
         .setIssuedAt(Timestamp.valueOf(LocalDateTime.now()))    // JWT 토큰 발급 시간
-        .setExpiration(Date.from(Instant.now().plus(Long.parseLong(expirationHours), ChronoUnit.HOURS)))    // JWT 토큰 만료 시간
+        .setExpiration(Date.from(Instant.now().plus(expirationHours, ChronoUnit.HOURS)))    // JWT 토큰 만료 시간
         .compact(); // JWT 토큰 생성
   }
 }

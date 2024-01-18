@@ -29,7 +29,7 @@ public class SignService implements SignPort {
   @Override
   public SignInResponse signIn(SignInRequest request) {
     User user = signRepository.findByMail(request.mail())
-        .filter(f -> f.getPassword().equals(request.password()))
+        .filter(f -> passwordEncoder.matches(request.password(), f.getPassword()))
         .orElseThrow(() -> new IllegalArgumentException("아이디 비밀번호가 일치하지 않습니다."));
     String token = tokenProvider.createToken(String.format("%s:%s", user.getId(), user.getType()));
     return new SignInResponse(user.getName(), user.getMail(), token);
