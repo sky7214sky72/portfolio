@@ -178,4 +178,7 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,java,macos,gradle
 src/main/resources/application-oauth.yml
 src/test/resources/application-oauth.yml
+src/main/resources/application-jwt.yml
+src/test/resources/application-jwt.yml
 application-oauth.yml
+application-jwt.yml
