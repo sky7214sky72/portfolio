@@ -1,5 +1,6 @@
 package org.example.portfolio.word.adapter.in;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.portfolio.global.annotation.AdminAuthorize;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "단어 조회 및 단어 등록")
 @RestController
 @RequestMapping("/words")
 @RequiredArgsConstructor
