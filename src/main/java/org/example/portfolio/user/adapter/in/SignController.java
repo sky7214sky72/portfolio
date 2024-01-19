@@ -24,13 +24,13 @@ public class SignController {
 
   @Operation(summary = "회원 가입")
   @PostMapping("/sign-up")
-  public ResponseEntity<Object> signUp(@RequestBody SignUpRequest request) {
+  public ResponseEntity<Object> signUp(@RequestBody SignUpRequest request) throws Exception {
     return signService.signUp(request);
   }
 
   @Operation(summary = "로그인")
   @PostMapping("/sign-in")
-  public ResponseEntity<SignInResponse> signIn(@RequestBody SignInRequest request) {
-    return ResponseEntity.ok(signService.signIn(request));
+  public ResponseEntity<SignInResponse> signIn(@RequestBody SignInRequest request) throws Exception {
+    return signService.signIn(request);
   }
 }

@@ -9,5 +9,5 @@ public interface SignPort {
 
   ResponseEntity<Object> signUp(SignUpRequest request);
 
-  SignInResponse signIn(SignInRequest request);
+  ResponseEntity<SignInResponse> signIn(SignInRequest request);
 }

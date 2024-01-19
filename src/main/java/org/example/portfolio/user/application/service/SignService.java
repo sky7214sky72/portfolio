@@ -1,7 +1,10 @@
 package org.example.portfolio.user.application.service;
 
-import java.util.Optional;
+import static org.example.portfolio.global.domain.ErrorCode.ALREADY_USER_SAVE;
+import static org.example.portfolio.global.domain.ErrorCode.MAIL_PASSWORD_INVALID;
+
 import lombok.RequiredArgsConstructor;
+import org.example.portfolio.global.exception.CustomException;
 import org.example.portfolio.global.jwt.TokenProvider;
 import org.example.portfolio.user.adapter.in.dto.request.SignInRequest;
 import org.example.portfolio.user.adapter.in.dto.request.SignUpRequest;
@@ -9,7 +12,6 @@ import org.example.portfolio.user.adapter.in.dto.response.SignInResponse;
 import org.example.portfolio.user.application.port.in.SignPort;
 import org.example.portfolio.user.application.port.out.SignRepository;
 import org.example.portfolio.user.domain.User;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,8 +30,7 @@ public class SignService implements SignPort {
   @Transactional
   public ResponseEntity<Object> signUp(SignUpRequest request) {
     if (signRepository.existsByMail(request.mail())) {
-      String errorMessage = "이미 사용중인 이메일입니다.";
-      return ResponseEntity.badRequest().body(errorMessage);
+      throw new CustomException(ALREADY_USER_SAVE);
     }
     User user = signRepository.save(User.from(request, passwordEncoder));
     return ResponseEntity.status(HttpStatus.CREATED).body(user);
@@ -37,11 +38,11 @@ public class SignService implements SignPort {
 
   @Override
   @Transactional
-  public SignInResponse signIn(SignInRequest request) {
+  public ResponseEntity<SignInResponse> signIn(SignInRequest request) {
     User user = signRepository.findByMail(request.mail())
         .filter(f -> passwordEncoder.matches(request.password(), f.getPassword()))
-        .orElseThrow(() -> new IllegalArgumentException("아이디 비밀번호가 일치하지 않습니다."));
+        .orElseThrow(() -> new CustomException(MAIL_PASSWORD_INVALID));
     String token = tokenProvider.createToken(String.format("%s:%s", user.getId(), user.getType()));
-    return new SignInResponse(user.getName(), user.getMail(), token);
+    return ResponseEntity.ok(new SignInResponse(user.getName(), user.getMail(), token));
   }
 }
