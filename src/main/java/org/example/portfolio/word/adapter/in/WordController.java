@@ -1,5 +1,6 @@
 package org.example.portfolio.word.adapter.in;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class WordController {
 
   private final WordService wordService;
 
+  @Operation(summary = "단어등록 (관리자용)")
   @AdminAuthorize
   @PostMapping
   @Transactional
@@ -37,6 +39,7 @@ public class WordController {
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
+  @Operation(summary = "단어 상세 조회")
   @UserAuthorize
   @GetMapping("/{wordId}")
   public ResponseEntity<GetWordResponse> getWord(@PathVariable final long wordId) {
@@ -49,6 +52,7 @@ public class WordController {
     return ResponseEntity.ok(response);
   }
 
+  @Operation(summary = "단어조회")
   @UserAuthorize
   @GetMapping
   public ResponseEntity<Page<GetWordResponse>> getWordList(@RequestParam(defaultValue = "0") int page,

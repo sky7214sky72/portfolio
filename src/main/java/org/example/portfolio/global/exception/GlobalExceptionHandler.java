@@ -1,7 +1,5 @@
 package org.example.portfolio.global.exception;
 
-import static org.example.portfolio.global.domain.ErrorCode.INTERNAL_SERVER_ERROR;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import java.security.SignatureException;
@@ -15,18 +13,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
   @ExceptionHandler({CustomException.class})
   protected ResponseEntity<ApiResponse> handleCustomException(CustomException e) {
     return ResponseEntity.status(e.getErrorCode().getStatus())
         .body(ApiResponse.error(e.getErrorCode().getStatus(), e.getErrorCode().getMessage()));
-  }
-
-  @ExceptionHandler({Exception.class})
-  protected ResponseEntity<ApiResponse> handleServerException(Exception e) {
-    return ResponseEntity.status(INTERNAL_SERVER_ERROR.getStatus())
-        .body(ApiResponse.error(HttpStatus.INTERNAL_SERVER_ERROR,
-            INTERNAL_SERVER_ERROR.getMessage()));
   }
 
   @ExceptionHandler({IllegalArgumentException.class, NoSuchElementException.class})
