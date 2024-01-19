@@ -37,3 +37,9 @@ com.example.portfolio
 
 ![스크린샷 2024-01-01 오후 10 09 08](https://github.com/ejoongseok/product-order-service/assets/45224987/d65db7f1-eb1d-4ff1-ae31-5197be3b7c06)
 
+
+## API 명세 (진행중)
+
+<img width="1438" alt="스크린샷 2024-01-19 오후 5 36 33" src="https://github.com/sky7214sky72/portfolio/assets/123547317/8fd2fc18-1a98-4b23-8550-bbc6f89662da">
+<img width="1428" alt="스크린샷 2024-01-19 오후 5 36 43" src="https://github.com/sky7214sky72/portfolio/assets/45224987/fe76c716-db77-49e5-80b4-25d9dbf4a87b">
+
