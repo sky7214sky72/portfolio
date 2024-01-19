@@ -1,4 +1,4 @@
-package org.example.portfolio.user.domain;
+package org.example.portfolio.sign.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.portfolio.global.domain.BaseTimeEntity;
 import org.example.portfolio.global.domain.MemberType;
-import org.example.portfolio.user.adapter.in.dto.request.SignUpRequest;
+import org.example.portfolio.sign.adapter.in.dto.request.SignUpRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter

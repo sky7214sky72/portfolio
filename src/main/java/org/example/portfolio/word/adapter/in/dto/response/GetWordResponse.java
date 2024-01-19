@@ -2,7 +2,7 @@ package org.example.portfolio.word.adapter.in.dto.response;
 
 import org.springframework.util.Assert;
 
-public record GetWordResponse(long id, String word, String mean) {
+public record GetWordResponse(long wordId, String word, String mean) {
 
 
   public GetWordResponse {

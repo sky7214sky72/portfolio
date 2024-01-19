@@ -1,13 +1,12 @@
-package org.example.portfolio.user.adapter.in;
+package org.example.portfolio.sign.adapter.in;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.example.portfolio.user.adapter.in.dto.request.SignInRequest;
-import org.example.portfolio.user.adapter.in.dto.request.SignUpRequest;
-import org.example.portfolio.user.adapter.in.dto.response.SignInResponse;
-import org.example.portfolio.user.application.service.SignService;
-import org.springframework.http.HttpStatus;
+import org.example.portfolio.sign.adapter.in.dto.request.SignInRequest;
+import org.example.portfolio.sign.adapter.in.dto.request.SignUpRequest;
+import org.example.portfolio.sign.adapter.in.dto.response.SignInResponse;
+import org.example.portfolio.sign.application.service.SignService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

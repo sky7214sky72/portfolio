@@ -1,4 +1,4 @@
-package org.example.portfolio.user.adapter.in.dto.request;
+package org.example.portfolio.sign.adapter.in.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

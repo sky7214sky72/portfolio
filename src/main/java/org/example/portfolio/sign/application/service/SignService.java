@@ -1,4 +1,4 @@
-package org.example.portfolio.user.application.service;
+package org.example.portfolio.sign.application.service;
 
 import static org.example.portfolio.global.domain.ErrorCode.ALREADY_USER_SAVE;
 import static org.example.portfolio.global.domain.ErrorCode.MAIL_PASSWORD_INVALID;
@@ -6,12 +6,12 @@ import static org.example.portfolio.global.domain.ErrorCode.MAIL_PASSWORD_INVALI
 import lombok.RequiredArgsConstructor;
 import org.example.portfolio.global.exception.CustomException;
 import org.example.portfolio.global.jwt.TokenProvider;
-import org.example.portfolio.user.adapter.in.dto.request.SignInRequest;
-import org.example.portfolio.user.adapter.in.dto.request.SignUpRequest;
-import org.example.portfolio.user.adapter.in.dto.response.SignInResponse;
-import org.example.portfolio.user.application.port.in.SignPort;
-import org.example.portfolio.user.application.port.out.SignRepository;
-import org.example.portfolio.user.domain.User;
+import org.example.portfolio.sign.adapter.in.dto.request.SignInRequest;
+import org.example.portfolio.sign.adapter.in.dto.request.SignUpRequest;
+import org.example.portfolio.sign.adapter.in.dto.response.SignInResponse;
+import org.example.portfolio.sign.application.port.in.SignPort;
+import org.example.portfolio.sign.application.port.out.SignRepository;
+import org.example.portfolio.sign.domain.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
