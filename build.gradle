@@ -75,6 +75,12 @@ dependencies {
 //    delete file(generated)
 //}
 
+tasks.register('copyApplicationYml', Copy) {
+    from './portfolio-config'
+    include '*.yml'
+    into './src/main/resources'
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
