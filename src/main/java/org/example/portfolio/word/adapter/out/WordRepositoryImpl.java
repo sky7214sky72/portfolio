@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.portfolio.sign.domain.QUser;
 import org.example.portfolio.word.adapter.in.dto.response.GetWordResponse;
 import org.example.portfolio.word.adapter.out.predicate.WordPredicate;
 import org.example.portfolio.word.application.port.out.WordRepositoryCustom;
@@ -21,13 +22,15 @@ public class WordRepositoryImpl implements WordRepositoryCustom {
 
   private final JPAQueryFactory jpaQueryFactory;
   private final QWord word = QWord.word1;
+  private static final QUser user = QUser.user;
 
   @Override
-  public Page<GetWordResponse> getWordList(String keyword, Pageable pageable) {
-    Predicate predicate = WordPredicate.getWordListPredicate(keyword);
+  public Page<GetWordResponse> getWordList(String keyword, Long userId, Pageable pageable) {
+    Predicate predicate = WordPredicate.getWordListPredicate(keyword, userId);
     List<GetWordResponse> content = jpaQueryFactory
         .select(Projections.constructor(GetWordResponse.class, word.id, word.word, word.mean))
         .from(word)
+        .join(user).on(word.user.id.eq(user.id))
         .where(predicate)
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())

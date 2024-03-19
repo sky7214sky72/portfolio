@@ -1,5 +1,6 @@
 package org.example.portfolio.word.application.port.in;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import org.example.portfolio.global.domain.ApiResponse;
 import org.example.portfolio.word.adapter.in.dto.request.AddWordRequest;
@@ -10,9 +11,9 @@ import org.springframework.http.ResponseEntity;
 
 public interface WordPort {
 
-  ResponseEntity<Object> save(final List<AddWordRequest> requestList);
+  ResponseEntity<Object> save(HttpServletRequest request, final List<AddWordRequest> requestList);
 
-  Word getWord(long wordId);
+  Word getWord(HttpServletRequest request, long wordId);
 
-  Page<GetWordResponse> getWordList(String keyword, int page, int size);
+  Page<GetWordResponse> getWordList(HttpServletRequest request, String keyword, int page, int size);
 }

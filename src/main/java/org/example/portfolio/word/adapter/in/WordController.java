@@ -2,9 +2,11 @@ package org.example.portfolio.word.adapter.in;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.example.portfolio.global.annotation.AdminAuthorize;
+import org.example.portfolio.global.annotation.AllAuthorize;
 import org.example.portfolio.global.domain.ApiResponse;
 import org.example.portfolio.word.adapter.in.dto.request.AddWordRequest;
 import org.example.portfolio.word.adapter.in.dto.response.GetWordResponse;
@@ -30,19 +32,21 @@ public class WordController {
 
   private final WordService wordService;
 
-  @Operation(summary = "단어등록 (관리자용)")
-  @AdminAuthorize
+  @Operation(summary = "단어등록")
+  @AllAuthorize
   @PostMapping
   @Transactional
-  public ResponseEntity<Void> addWord(@RequestBody final List<AddWordRequest> addWordRequest) {
-    wordService.save(addWordRequest);
+  public ResponseEntity<Void> addWord(HttpServletRequest request,
+      @RequestBody final List<AddWordRequest> addWordRequest) {
+    wordService.save(request, addWordRequest);
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
   @Operation(summary = "단어 상세 조회")
   @GetMapping("/{wordId}")
-  public ResponseEntity<GetWordResponse> getWord(@PathVariable final long wordId) {
-    final Word word = wordService.getWord(wordId);
+  public ResponseEntity<GetWordResponse> getWord(HttpServletRequest request,
+      @PathVariable final long wordId) {
+    final Word word = wordService.getWord(request, wordId);
     final GetWordResponse response = new GetWordResponse(
         word.getId(),
         word.getWord(),
@@ -53,10 +57,12 @@ public class WordController {
 
   @Operation(summary = "단어조회")
   @GetMapping
-  public ResponseEntity<Page<GetWordResponse>> getWordList(@RequestParam(defaultValue = "0") int page,
+  public ResponseEntity<Page<GetWordResponse>> getWordList(
+      HttpServletRequest request,
+      @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size,
       @RequestParam(required = false) String keyword) {
-    final Page<GetWordResponse> response = wordService.getWordList(keyword, page, size);
+    final Page<GetWordResponse> response = wordService.getWordList(request, keyword, page, size);
     return ResponseEntity.ok(response);
   }
 }

@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface WordRepositoryCustom {
 
-  Page<GetWordResponse> getWordList(String keyword, Pageable pageable);
+  Page<GetWordResponse> getWordList(String keyword, Long userId, Pageable pageable);
 }

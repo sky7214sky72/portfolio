@@ -14,6 +14,7 @@ public enum ErrorCode {
   //404 NOT FOUND
   WORD_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "단어를 찾을 수 없습니다."),
   MAIL_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "가입된 이메일이 아닙니다."),
+  USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "유저를 찾을수 없습니다."),
   //409 CONFLICT
   ALREADY_USER_SAVE(HttpStatus.CONFLICT.value(), "이미 가입한 유저입니다."),
   ALREADY_WORD_SAVE(HttpStatus.CONFLICT.value(), "이미 저장된 단어입니다."),
