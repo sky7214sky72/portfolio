@@ -45,8 +45,8 @@ public class UserApiTest extends ApiTest {
   @BeforeEach
   void 회원가입() {
     SignUpRequest request = SignSteps.회원가입정보_생성();
-    signRepository.save(User.from(request, passwordEncoder));
-    wordRepository.save(new Word("word", "단어"));
+    User user = signRepository.save(User.from(request, passwordEncoder));
+    wordRepository.save(new Word("word", user, "단어"));
   }
 
   @Test
