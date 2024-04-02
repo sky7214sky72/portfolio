@@ -5,6 +5,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import java.security.SignatureException;
 import java.util.NoSuchElementException;
 import org.example.portfolio.global.domain.ApiResponse;
+import org.example.portfolio.global.domain.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,10 +21,10 @@ public class GlobalExceptionHandler {
   private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
   @ExceptionHandler({CustomException.class})
-  protected ResponseEntity<ApiResponse> handleCustomException(CustomException e) {
-    logger.error("CustomException occurred: {}", e.getMessage(), e);
-    return ResponseEntity.status(e.getErrorCode().getStatus())
-        .body(ApiResponse.error(e.getErrorCode().getStatus(), e.getErrorCode().getMessage()));
+  protected ResponseEntity<ApiResponse> handleCustomException(ErrorCode errorCode) {
+    logger.error("CustomException occurred: {}", errorCode.getMessage());
+    return ResponseEntity.status(errorCode.getStatus())
+        .body(ApiResponse.error(errorCode.getStatus(), errorCode.getMessage()));
   }
 
   @ExceptionHandler({IllegalArgumentException.class, NoSuchElementException.class})

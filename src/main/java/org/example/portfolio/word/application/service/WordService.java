@@ -1,6 +1,5 @@
 package org.example.portfolio.word.application.service;
 
-import static org.example.portfolio.global.domain.ErrorCode.ALREADY_USER_SAVE;
 import static org.example.portfolio.global.domain.ErrorCode.USER_NOT_FOUND;
 import static org.example.portfolio.global.domain.ErrorCode.WORD_NOT_FOUND;
 
@@ -8,9 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.example.portfolio.global.domain.ApiResponse;
 import org.example.portfolio.global.exception.CustomException;
 import org.example.portfolio.global.jwt.TokenProvider;
 import org.example.portfolio.sign.application.port.out.SignRepository;

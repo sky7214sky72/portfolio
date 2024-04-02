@@ -2,6 +2,7 @@ package org.example.portfolio.global.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.example.portfolio.global.exception.CustomException;
 import org.springframework.http.HttpStatus;
 
 
@@ -28,5 +29,9 @@ public enum ErrorCode {
   ErrorCode(int status, String message) {
     this.status = status;
     this.message = message;
+  }
+
+  public CustomException toException() {
+    return new CustomException(this);
   }
 }
