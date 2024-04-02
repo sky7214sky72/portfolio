@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(AccessDeniedException.class)
-  public ResponseEntity<ApiResponse> handleAccessDeniedException() {
+  public ResponseEntity<ApiResponse> handleAccessDeniedException(AccessDeniedException e) {
     logger.error("접근이 거부되었습니다.");
     return ResponseEntity.status(HttpStatus.FORBIDDEN)
         .body(ApiResponse.error(HttpStatus.FORBIDDEN.value(), "접근이 거부되었습니다."));
@@ -49,21 +49,21 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(SignatureException.class)
-  public ResponseEntity<ApiResponse> handleSignatureException() {
+  public ResponseEntity<ApiResponse> handleSignatureException(SignatureException e) {
     logger.error("토큰이 유효하지 않습니다.");
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
         .body(ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), "토큰이 유효하지 않습니다."));
   }
 
   @ExceptionHandler(MalformedJwtException.class)
-  public ResponseEntity<ApiResponse> handleMalformedJwtException() {
+  public ResponseEntity<ApiResponse> handleMalformedJwtException(MalformedJwtException e) {
     logger.error("올바르지 않은 토큰입니다.");
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
         .body(ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), "올바르지 않은 토큰입니다."));
   }
 
   @ExceptionHandler(ExpiredJwtException.class)
-  public ResponseEntity<ApiResponse> handleExpiredJwtException() {
+  public ResponseEntity<ApiResponse> handleExpiredJwtException(ExpiredJwtException e) {
     logger.error("토큰이 만료되었습니다. 다시 로그인해주세요.");
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
         .body(ApiResponse.error(HttpStatus.UNAUTHORIZED.value(), "토큰이 만료되었습니다. 다시 로그인해주세요."));
