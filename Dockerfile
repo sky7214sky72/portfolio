@@ -8,6 +8,7 @@ ARG JAR_FILE=build/libs/*.jar
 
 # jar 파일 복제
 COPY ${JAR_FILE} app.jar
+COPY src/main/resources/logback-spring.xml /logback-spring.xml
 
 # 실행 명령어
 ENTRYPOINT ["java", "-jar", "app.jar"]
