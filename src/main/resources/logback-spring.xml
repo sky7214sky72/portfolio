@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-  <springProperty name="filePath" source="logging.file.path"/>
+  <!-- Define the environment variable 'filePath' -->
+  <property name="filePath" value="${logging.file.path:-/var/log}"/>
 
+  <!-- Console appender -->
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
 
+  <!-- Rolling file appender for app logs -->
   <appender name="APP_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${filePath}/app.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -22,6 +25,7 @@
     </encoder>
   </appender>
 
+  <!-- Rolling file appender for error logs -->
   <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${filePath}/error.log</file>
     <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -41,6 +45,7 @@
     </encoder>
   </appender>
 
+  <!-- Root logger level and appenders -->
   <root level="INFO">
     <appender-ref ref="STDOUT"/>
     <appender-ref ref="APP_FILE"/>
