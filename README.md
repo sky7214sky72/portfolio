@@ -46,3 +46,5 @@ com.example.portfolio
 ## 모니터링 툴 (prometheus, promtail, loki, grafana)
 ### 서버 로그나 현재 서버 상태 파악 가능한 모니터링 툴 적용
 ![image](https://github.com/sky7214sky72/portfolio/assets/45224987/1c4e01ac-ba48-4b4a-b740-8106ac23785b)
+![image](https://github.com/sky7214sky72/portfolio/assets/45224987/e327c16b-4c5b-4670-b6c9-4aade9f88ba2)
+
