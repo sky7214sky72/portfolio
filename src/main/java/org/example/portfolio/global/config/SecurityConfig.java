@@ -1,8 +1,10 @@
 package org.example.portfolio.global.config;
 
 import lombok.RequiredArgsConstructor;
+import org.example.portfolio.global.jwt.JwtAccessDeniedHandler;
+import org.example.portfolio.global.jwt.JwtAuthenticationEntryPoint;
 import org.example.portfolio.global.jwt.JwtAuthenticationFilter;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.example.portfolio.global.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -13,15 +15,17 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableMethodSecurity
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfig {
 
-  private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/sign-up", "/sign-in"};
+  private final TokenProvider tokenProvider;
+  private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+  private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
   @Bean
   public PasswordEncoder passwordEncoder() {
@@ -41,8 +45,11 @@ public class SecurityConfig {
         )
         .sessionManagement(sessionManagement ->
             sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        )	// 세션을 사용하지 않으므로 STATELESS 설정
-        .addFilterBefore(jwtAuthenticationFilter, BasicAuthenticationFilter.class)
+        )  // 세션을 사용하지 않으므로 STATELESS 설정
+        .addFilterBefore(new JwtAuthenticationFilter(tokenProvider),
+            UsernamePasswordAuthenticationFilter.class)
+        .exceptionHandling((exceptionConfig) -> exceptionConfig.authenticationEntryPoint(
+            jwtAuthenticationEntryPoint).accessDeniedHandler(jwtAccessDeniedHandler))
         .build();
   }
 }
