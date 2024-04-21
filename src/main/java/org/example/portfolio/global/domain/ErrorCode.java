@@ -20,7 +20,8 @@ public enum ErrorCode {
   ALREADY_USER_SAVE(HttpStatus.CONFLICT.value(), "이미 가입한 유저입니다."),
   ALREADY_WORD_SAVE(HttpStatus.CONFLICT.value(), "이미 저장된 단어입니다."),
   //500 Server Error
-  INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버 에러입니다. 서버 팀에 연락주세요!");
+  INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버 에러입니다. 서버 팀에 연락주세요!"),
+  OAUTH_SERVER_TYPE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "지원하지 않는 소셜 로그인 타입입니다.");
 
   @Getter
   private final int status;
