@@ -20,6 +20,7 @@ public record KakaoMemberResponse(
         .type(MemberType.USER.name())
         .name(kakaoAccount.profile.nickname)
         .mail(kakaoAccount.email)
+        .provider(OauthServerType.KAKAO.name())
         .build();
   }
 

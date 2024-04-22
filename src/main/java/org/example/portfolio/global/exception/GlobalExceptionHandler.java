@@ -21,7 +21,8 @@ public class GlobalExceptionHandler {
   private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
   @ExceptionHandler({CustomException.class})
-  protected ResponseEntity<ApiResponse> handleCustomException(ErrorCode errorCode) {
+  protected ResponseEntity<ApiResponse> handleCustomException(CustomException ex) {
+    ErrorCode errorCode = ex.getErrorCode();
     logger.error("CustomException occurred: {}", errorCode.getMessage());
     return ResponseEntity.status(errorCode.getStatus())
         .body(ApiResponse.error(errorCode.getStatus(), errorCode.getMessage()));

@@ -1,5 +1,6 @@
 package org.example.portfolio.sign.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +31,7 @@ public class User extends BaseTimeEntity {
   private String name;
   private String mail;
   private String password;
+  private String provider;
 
   public static User from(SignUpRequest signUpRequest, PasswordEncoder passwordEncoder) {
     return User.builder()
@@ -38,5 +40,10 @@ public class User extends BaseTimeEntity {
         .name(signUpRequest.name())
         .password(passwordEncoder.encode(signUpRequest.password()))
         .build();
+  }
+
+  @JsonIgnore
+  public void updatePassword(PasswordEncoder passwordEncoder, String password) {
+    this.password = passwordEncoder.encode(password);
   }
 }

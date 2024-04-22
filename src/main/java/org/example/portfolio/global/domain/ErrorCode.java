@@ -1,6 +1,5 @@
 package org.example.portfolio.global.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.example.portfolio.global.exception.CustomException;
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,9 @@ public enum ErrorCode {
   //400 잘못된 요청
   INVALID_PARAMETER(HttpStatus.BAD_REQUEST.value(), "파라미터 값을 확인해주세요."),
   MAIL_PASSWORD_INVALID(HttpStatus.BAD_REQUEST.value(), "아이디 비밀번호가 일치하지 않습니다."),
+  KAKAO_USER(HttpStatus.BAD_REQUEST.value(), "카카오로 가입된 계정입니다. 카카오로 로그인하기로 로그인해 주세요."),
+  NAVER_USER(HttpStatus.BAD_REQUEST.value(), "네이버로 가입된 계정입니다. 네이버로 로그인하기로 로그인해 주세요."),
+  GOOGLE_USER(HttpStatus.BAD_REQUEST.value(), "구글로 가입된 계정입니다. 구글로 로그인하기로 로그인해 주세요."),
   //404 NOT FOUND
   WORD_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "단어를 찾을 수 없습니다."),
   MAIL_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "가입된 이메일이 아닙니다."),
