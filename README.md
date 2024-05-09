@@ -48,3 +48,10 @@ com.example.portfolio
 ![image](https://github.com/sky7214sky72/portfolio/assets/45224987/1c4e01ac-ba48-4b4a-b740-8106ac23785b)
 ![image](https://github.com/sky7214sky72/portfolio/assets/45224987/e327c16b-4c5b-4670-b6c9-4aade9f88ba2)
 
+
+## 코드 설계 원칙
+### 비즈니스 로직 작성 기준
+ - 엔티티 내에서 비즈니스 로직을 작성 하는 경우 : 해당 엔티티내에서만 적용 가능한 로직인 경우 엔티티 내에 비즈니스 로직을 작성
+ - 서비스 계층에서 비즈니스 로직을 작성하는 경우 : 다양한 엔티티가 관련된 로직을 만들어야 하는 경우 작성
+ - 로직이 간단한 경우 컨트롤러내에서 직접 처리
+ - DTO와 엔티티 간의 매핑 : 유틸리티 클래스를 따로 만들어 사용하는게 좋다
