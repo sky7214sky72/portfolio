@@ -4,6 +4,8 @@ import static org.example.portfolio.global.domain.ErrorCode.ALREADY_USER_SAVE;
 import static org.example.portfolio.global.domain.ErrorCode.MAIL_PASSWORD_INVALID;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.example.portfolio.global.domain.ErrorCode;
 import org.example.portfolio.global.exception.CustomException;
 import org.example.portfolio.global.jwt.TokenProvider;
 import org.example.portfolio.sign.adapter.in.dto.request.SignInRequest;
@@ -42,6 +44,17 @@ public class SignService implements SignPort {
     User user = signRepository.findByMail(request.mail())
         .filter(f -> passwordEncoder.matches(request.password(), f.getPassword()))
         .orElseThrow(() -> new CustomException(MAIL_PASSWORD_INVALID));
+    if (!StringUtils.isEmpty(user.getProvider())) {
+      String provider = user.getProvider().toUpperCase();
+      switch (provider) {
+        case "KAKAO":
+        case "GOOGLE":
+        case "NAVER":
+          throw new CustomException(ErrorCode.valueOf(provider + "_USER"));
+        default:
+          throw new CustomException(ErrorCode.INVALID_PARAMETER);
+      }
+    }
     String token = tokenProvider.createToken(String.format("%s:%s", user.getId(), user.getType()));
     return ResponseEntity.ok(new SignInResponse(user.getName(), user.getMail(), token));
   }

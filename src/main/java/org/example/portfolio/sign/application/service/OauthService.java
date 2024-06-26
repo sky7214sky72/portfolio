@@ -9,6 +9,7 @@ import org.example.portfolio.sign.domain.User;
 import org.example.portfolio.sign.domain.authcode.AuthCodeRequestUrlProviderComposite;
 import org.example.portfolio.sign.domain.client.OauthMemberClientComposite;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,6 +20,7 @@ public class OauthService {
   private final OauthMemberClientComposite oauthMemberClientComposite;
   private final SignRepository signRepository;
   private final TokenProvider tokenProvider;
+  private final PasswordEncoder passwordEncoder;
 
   public String getAuthCodeRequestUrl(OauthServerType oauthServerType) {
     return authCodeRequestUrlProviderComposite.provide(oauthServerType);
@@ -26,6 +28,7 @@ public class OauthService {
 
   public ResponseEntity<SignInResponse> login(OauthServerType oauthServerType, String authCode) {
     User oauthMember = oauthMemberClientComposite.fetch(oauthServerType, authCode);
+    oauthMember.updatePassword(passwordEncoder, oauthMember.getMail());
     User saved = signRepository.findByMail(oauthMember.getMail())
         .orElseGet(() -> signRepository.save(oauthMember));
     String token = tokenProvider.createToken(String.format("%s:%s", saved.getId(), saved.getType()));
