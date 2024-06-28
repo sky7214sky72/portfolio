@@ -1,54 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-  <!-- Define the environment variable 'filePath' -->
-  <property name="filePath" value="${logging.file.path:-/var/log}"/>
+  <!-- Spring Boot 설정 파일의 프로퍼티를 참조 -->
+  <springProperty name="LOG_DIR" source="logging.path"/>
 
-  <!-- Console appender -->
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-    </encoder>
-  </appender>
-
-  <!-- Rolling file appender for app logs -->
-  <appender name="APP_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${filePath}/app.log</file>
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_DIR}/app.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>${filePath}/app.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
-      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-        <maxFileSize>1GB</maxFileSize>
-      </timeBasedFileNamingAndTriggeringPolicy>
-      <maxHistory>10</maxHistory>
-    </rollingPolicy>
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-    </encoder>
-  </appender>
-
-  <!-- Rolling file appender for error logs -->
-  <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${filePath}/error.log</file>
-    <filter class="ch.qos.logback.classic.filter.LevelFilter">
-      <level>ERROR</level>
-      <onMatch>ACCEPT</onMatch>
-      <onMismatch>DENY</onMismatch>
-    </filter>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>${filePath}/error-%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
-      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-        <maxFileSize>100MB</maxFileSize>
-      </timeBasedFileNamingAndTriggeringPolicy>
+      <fileNamePattern>${LOG_DIR}/app.%d{yyyy-MM-dd}.log</fileNamePattern>
       <maxHistory>30</maxHistory>
     </rollingPolicy>
     <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
 
-  <!-- Root logger level and appenders -->
-  <root level="INFO">
-    <appender-ref ref="STDOUT"/>
-    <appender-ref ref="APP_FILE"/>
-    <appender-ref ref="ERROR_FILE"/>
+  <root level="info">
+    <appender-ref ref="FILE"/>
   </root>
 </configuration>

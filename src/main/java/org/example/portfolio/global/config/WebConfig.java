@@ -15,7 +15,6 @@ public class WebConfig implements WebMvcConfigurer {
 
   @Override
   public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    // 기본 핸들러를 삭제하거나, 빈 디렉토리로 설정
     registry.addResourceHandler("/**")
         .addResourceLocations("classpath:/no-static-resources/");
   }
