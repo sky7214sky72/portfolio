@@ -7,7 +7,6 @@ import org.example.portfolio.baseball.adapter.in.dto.WrcGetResponseDto;
 import org.example.portfolio.baseball.application.port.in.StatPort;
 import org.example.portfolio.baseball.application.port.out.HitterRepository;
 import org.example.portfolio.baseball.application.port.out.LeagueRepository;
-import org.example.portfolio.baseball.application.port.out.TeamRepository;
 import org.example.portfolio.baseball.domain.Hitter;
 import org.example.portfolio.baseball.domain.League;
 import org.example.portfolio.baseball.domain.WrcCalculator;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class StatService implements StatPort {
 
-  private final TeamRepository teamRepository;
   private final LeagueRepository leagueRepository;
   private final HitterRepository hitterRepository;
 

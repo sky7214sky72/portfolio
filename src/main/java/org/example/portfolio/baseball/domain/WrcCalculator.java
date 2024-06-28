@@ -23,11 +23,6 @@ public class WrcCalculator {
     double wRaa = ((wOba - leagueWoba) / wObaSc) * wrcGetResponseDto.getPa();
     double leagueNormalR = (double) league.getR() / league.getPa();
     double leagueWrcPa = (leagueNormalR / league.getPa()) * league.getPa();
-    if (wrcGetResponseDto.getName().equals("김도영")) {
-      System.out.println(wRaa);
-      System.out.println(wObaSc);
-      System.out.println(leagueWoba);
-    }
     double wrc = ((wRaa / wrcGetResponseDto.getPa() + leagueNormalR) + (leagueNormalR
         - (leagueNormalR * team.getParkFactor()))) / leagueWrcPa * 100;
     wrcGetResponseDto.updateWrc((int) wrc);
