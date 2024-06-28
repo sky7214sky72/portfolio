@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "유저 기능")
 @RestController
-@RequestMapping("/memorized")
+@RequestMapping("/word/memorized")
 @RequiredArgsConstructor
 public class UserController {
 

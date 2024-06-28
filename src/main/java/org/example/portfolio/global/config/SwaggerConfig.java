@@ -17,6 +17,22 @@ public class SwaggerConfig {
   private static final String SECURITY_SCHEME_NAME = "authorization";
 
   @Bean
+  public GroupedOpenApi getWordApi() {
+    return GroupedOpenApi.builder()
+        .group("word")
+        .pathsToMatch("/word/**")
+        .build();
+  }
+
+  @Bean
+  public GroupedOpenApi getBaseballApi() {
+    return GroupedOpenApi.builder()
+        .group("baseball")
+        .pathsToMatch("/baseball/**")
+        .build();
+  }
+
+  @Bean
   public OpenAPI swaggerApi() {
     return new OpenAPI()
         .components(new Components()
@@ -27,10 +43,13 @@ public class SwaggerConfig {
                 .bearerFormat("JWT")
             ))
         .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
-        .info(new Info()
-            .title("단어 외우기 사이트 API 문서")
-            .description("포트폴리오 API문서입니다.")
-            .version("1.0.0")
-        );
+        .info(getInfo());
+  }
+
+  private Info getInfo() {
+    return new Info()
+        .title("포트폴리오 API 문서")
+        .description("포트폴리오 API 문서입니다.")
+        .version("1.0.0");
   }
 }

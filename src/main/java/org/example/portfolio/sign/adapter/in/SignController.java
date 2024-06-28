@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "회원 가입 및 로그인")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping
+@RequestMapping("/word")
 public class SignController {
 
   private final SignService signService;

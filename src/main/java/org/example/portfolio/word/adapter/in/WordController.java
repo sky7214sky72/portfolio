@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "단어 조회 및 단어 등록")
 @RestController
-@RequestMapping("/words")
+@RequestMapping("/word")
 @RequiredArgsConstructor
 public class WordController {
 
