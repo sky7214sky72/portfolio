@@ -6,11 +6,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
+
+  @Override
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    // 기본 핸들러를 삭제하거나, 빈 디렉토리로 설정
+    registry.addResourceHandler("/**")
+        .addResourceLocations("classpath:/no-static-resources/");
+  }
 
   @Override
   public void addCorsMappings(CorsRegistry registry) {
