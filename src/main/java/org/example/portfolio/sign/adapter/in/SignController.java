@@ -49,7 +49,7 @@ public class SignController {
   ) {
     String redirectUrl = oauthService.getAuthCodeRequestUrl(oauthServerType);
     response.sendRedirect(redirectUrl);
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(null);
   }
 
   @GetMapping("/login/{oauthServerType}")
