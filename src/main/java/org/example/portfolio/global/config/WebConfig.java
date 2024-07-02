@@ -2,6 +2,7 @@ package org.example.portfolio.global.config;
 
 import lombok.RequiredArgsConstructor;
 import org.example.portfolio.sign.infra.OauthServerTypeConverter;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.HttpMethod;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
+@ComponentScan
 public class WebConfig implements WebMvcConfigurer {
 
   @Override
