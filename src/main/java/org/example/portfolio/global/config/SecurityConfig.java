@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
   private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/word/sign-up", "/word/sign-in",
-      "/word/oauth/**", "/word/login/**", "/actuator/prometheus", "/baseball/**"};
+      "/word/oauth/**", "/word/login/**", "/actuator/prometheus", "/baseball/**", "/static/**"};
   private final TokenProvider tokenProvider;
   private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
   private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
