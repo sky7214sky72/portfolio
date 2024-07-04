@@ -13,7 +13,7 @@ public class BaseballApiTest extends ApiTest {
         .disableCsrf()
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .when()
-        .get("/api/v1/baseball/hitter")
+        .get("/baseball/hitter")
         .then().log().all().extract();
   }
 }

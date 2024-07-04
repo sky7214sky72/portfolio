@@ -19,7 +19,7 @@ public class UserSteps {
             ContentType.JSON)
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .when()
-        .post("/memorized/1")
+        .post("/word/memorized/1")
         .then()
         .log().all().extract();
   }
@@ -35,7 +35,7 @@ public class UserSteps {
             ContentType.JSON)
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .when()
-        .get("/memorized")
+        .get("/word/memorized")
         .then()
         .log().all().extract();
   }

@@ -84,6 +84,12 @@ tasks.register('copyApplicationYml', Copy) {
     into './src/main/resources'
 }
 
+tasks.register('copyTestApplicationYml', Copy) {
+    from './portfolio-config/test'
+    include '*.yml'
+    into './src/test/resources'
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }

@@ -17,7 +17,7 @@ public class WordSteps extends ApiTest {
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .body(addWordRequestList)
         .when()
-        .post("/words")
+        .post("/word")
         .then()
         .log().all().extract();
     return response;

@@ -27,7 +27,9 @@ public class StatService implements StatPort {
     hitters.forEach(hitter -> {
       WrcGetResponseDto wrcGetResponseDto = new WrcGetResponseDto();
       wrcGetResponseDto.entityMapper(hitter);
-      WrcCalculator.wrc(league, hitter.getTeam(), wrcGetResponseDto);
+      WrcGetResponseDto leaguewrcGetResponseDto = new WrcGetResponseDto();
+      leaguewrcGetResponseDto.entityMapper(league);
+      WrcCalculator.wrcPlus(leaguewrcGetResponseDto, hitter.getTeam(), wrcGetResponseDto);
       result.add(wrcGetResponseDto);
     });
     return result;

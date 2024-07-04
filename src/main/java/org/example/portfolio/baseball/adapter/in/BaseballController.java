@@ -29,6 +29,6 @@ public class BaseballController {
   public ResponseEntity<List<WrcGetResponseDto>> getHitterStat() {
     final List<WrcGetResponseDto> response = statService.getHitterStat();
     logger.info("Wrc+ 조회");
-    return ResponseEntity.ok(response.stream().sorted(Comparator.comparing(WrcGetResponseDto::getWrc).reversed()).toList());
+    return ResponseEntity.ok(response.stream().sorted(Comparator.comparing(WrcGetResponseDto::getWrcPlus).reversed()).toList());
   }
 }

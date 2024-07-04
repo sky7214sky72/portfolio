@@ -24,7 +24,7 @@ public class SignSteps {
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .body(request)
         .when()
-        .post("/sign-up")
+        .post("/word/sign-up")
         .then().log().all().extract();
   }
 
@@ -35,7 +35,7 @@ public class SignSteps {
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .body(request)
         .when()
-        .post("/sign-in")
+        .post("/word/sign-in")
         .then().log().all().extract();
   }
 }

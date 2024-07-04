@@ -28,7 +28,7 @@ public class WordApiTest extends ApiTest {
     Long wordId = 1L;
     final ExtractableResponse<Response> response = RestAssured.given().log().all()
         .when()
-        .get("/words/{wordId}", wordId)
+        .get("/word/{wordId}", wordId)
         .then().log().all()
         .extract();
     assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
