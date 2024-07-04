@@ -38,6 +38,7 @@ jobs:
       run: |
         ./gradlew clean
         ./gradlew copyApplicationYml
+        ./gradlew copyTestApplicationYml
         ./gradlew build
 
       # 3. Docker 이미지 빌드
