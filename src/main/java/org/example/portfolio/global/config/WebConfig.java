@@ -27,7 +27,7 @@ public class WebConfig implements WebMvcConfigurer {
             HttpMethod.PATCH.name()
         )
         .allowCredentials(true)
-        .exposedHeaders("*");
+        .exposedHeaders("Authorization", "Content-Type");
   }
 
   @Override
