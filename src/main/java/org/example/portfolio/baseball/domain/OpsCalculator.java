@@ -16,8 +16,11 @@ public class OpsCalculator {
     double leagueSlg = (double) (leagueGetResponseDto.getB1() + leagueGetResponseDto.getB2() * 2
         + leagueGetResponseDto.getB3() * 3 + leagueGetResponseDto.getHr() * 4)
         / leagueGetResponseDto.getAb();
-    double opsPlus = (statGetResponseDto.getObp() / leagueGetResponseDto.getObp() + slg / leagueSlg -1) * 100 / team.getParkFactor();
-        statGetResponseDto.updateOpsPlus(opsPlus);
-    statGetResponseDto.updateOpsPlus(opsPlus);
+    double opsPlus =
+        (statGetResponseDto.getObp() / leagueGetResponseDto.getObp()
+            + (Math.round(slg * 1000.0) / 1000.0) / (Math.round(leagueSlg * 1000.0) / 1000.0) - 1)
+            * 100
+            / team.getParkFactor();
+    statGetResponseDto.updateOpsPlus(Math.round(opsPlus * 1000.0) / 1000.0);
   }
 }
