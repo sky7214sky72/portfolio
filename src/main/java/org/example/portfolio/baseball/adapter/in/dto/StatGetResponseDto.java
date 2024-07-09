@@ -9,7 +9,7 @@ import org.example.portfolio.baseball.domain.League;
 @Getter
 @Setter
 @NoArgsConstructor
-public class WrcGetResponseDto {
+public class StatGetResponseDto {
 
   private String teamName;
   private String name;
@@ -65,5 +65,9 @@ public class WrcGetResponseDto {
 
   public void updateWrcPlus(int wrcPlus) {
     this.wrcPlus = wrcPlus;
+  }
+
+  public void updateOpsPlus(double opsPlus) {
+    this.opsPlus = opsPlus;
   }
 }
