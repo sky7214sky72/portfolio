@@ -1,5 +1,6 @@
 package org.example.portfolio.baseball.adapter.in.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,20 +14,33 @@ public class StatGetResponseDto {
 
   private String teamName;
   private String name;
+  @JsonIgnore
   private int pa;
+  @JsonIgnore
   private int ab;
+  @JsonIgnore
   private int bb;
+  @JsonIgnore
   private int ib;
+  @JsonIgnore
   private int hp;
+  @JsonIgnore
   private int sf;
+  @JsonIgnore
   private int h;
+  @JsonIgnore
   private int b1;
+  @JsonIgnore
   private int b2;
+  @JsonIgnore
   private int b3;
+  @JsonIgnore
   private int hr;
+  @JsonIgnore
   private double obp;
   private int wrcPlus;
   private double opsPlus;
+  @JsonIgnore
   private int r;
 
   public void entityMapper(Hitter hitter) {
