@@ -25,7 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
         .allowedOrigins("http://localhost:8080", "https://kauth.kakao.com/oauth/authorize",
-            "https://kauth.kakao.com/oauth/authorize", "https://kapi.kakao.com/v2/user/me", "http://localhost:3000")
+            "https://kauth.kakao.com/oauth/authorize", "https://kapi.kakao.com/v2/user/me", "http://localhost:4000")
         .allowedMethods(
             HttpMethod.GET.name(),
             HttpMethod.POST.name(),
