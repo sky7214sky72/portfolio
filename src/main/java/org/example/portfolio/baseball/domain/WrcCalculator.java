@@ -30,7 +30,7 @@ public class WrcCalculator {
     double leagueNormalR = (double) leagueGetResponseDto.getR() / leagueGetResponseDto.getPa();
     double leagueWrcPa = (leagueNormalR / leagueGetResponseDto.getPa()) * leagueGetResponseDto.getPa();
     double wrc = ((wRaa / statGetResponseDto.getPa() + leagueNormalR) + (leagueNormalR
-        - (leagueNormalR * team.getParkFactor()))) / leagueWrcPa * 100;
+        - (leagueNormalR * team.getParkFactor()))) / leagueWrcPa * 100 - 50;
     statGetResponseDto.updateWrcPlus((int) wrc);
   }
 }
