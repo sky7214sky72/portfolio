@@ -8,7 +8,7 @@ public class WrcCalculator {
    * . woba 계산
    */
   private static double wOba(StatGetResponseDto statGetResponseDto) {
-    double hbi = (0.7 * statGetResponseDto.getHp()) + (0.7 * statGetResponseDto.getBb()) + (0.7
+    double hbi = (0.7 * statGetResponseDto.getHp()) + (0.7 * statGetResponseDto.getBb()) - (0.7
         * statGetResponseDto.getIb());
     double oneBaseHit = 0.9 * statGetResponseDto.getB1();
     double twoBaseHit = 1.25 * statGetResponseDto.getB2();
