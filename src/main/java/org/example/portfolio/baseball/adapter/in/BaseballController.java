@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.example.portfolio.baseball.adapter.in.dto.PitcherGetResponse;
 import org.example.portfolio.baseball.adapter.in.dto.StatGetResponseDto;
 import org.example.portfolio.baseball.application.service.StatService;
 import org.slf4j.Logger;
@@ -30,5 +31,13 @@ public class BaseballController {
     final List<StatGetResponseDto> response = statService.getHitterStat();
     logger.info("Wrc+, Ops+ 조회");
     return ResponseEntity.ok(response.stream().sorted(Comparator.comparing(StatGetResponseDto::getWrcPlus).reversed()).toList());
+  }
+
+  @Operation(summary = "투수 성적 조회")
+  @GetMapping("/pitcher")
+  public ResponseEntity<List<PitcherGetResponse>> getPitcherStat() {
+    final List<PitcherGetResponse> response = statService.getPitcherStat();
+    logger.info("투수 스탯 조회");
+    return ResponseEntity.ok(response.stream().sorted(Comparator.comparing(PitcherGetResponse::fip).reversed()).toList());
   }
 }
