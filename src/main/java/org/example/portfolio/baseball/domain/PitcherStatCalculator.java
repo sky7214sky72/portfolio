@@ -14,10 +14,6 @@ public class PitcherStatCalculator {
     double leaguePitcherF =
         (-(2 * leaguePitcher.getSo()) + (3 * (leaguePitcher.getBb() + leaguePitcher.getHp())) + (13
             * leaguePitcher.getHr())) / leaguePitcher.getIp();
-    if (pitcher.getName().equals("윌커슨")) {
-      System.out.println(c);
-      System.out.println(pitcherF);
-    }
     double leagueFip = Math.round((leaguePitcherF + c) * 100.0) / 100.0;
     double fip = Math.round((pitcherF + c) * 100.0) / 100.0;
     double fipPlus = (100 * (leagueFip / (fip + (fip - fip * pitcher.getTeam()
