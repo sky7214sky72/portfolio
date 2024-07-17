@@ -38,6 +38,6 @@ public class BaseballController {
   public ResponseEntity<List<PitcherGetResponse>> getPitcherStat() {
     final List<PitcherGetResponse> response = statService.getPitcherStat();
     logger.info("투수 스탯 조회");
-    return ResponseEntity.ok(response.stream().sorted(Comparator.comparing(PitcherGetResponse::fip).reversed()).toList());
+    return ResponseEntity.ok(response.stream().sorted(Comparator.comparingDouble(PitcherGetResponse::fip)).toList());
   }
 }
