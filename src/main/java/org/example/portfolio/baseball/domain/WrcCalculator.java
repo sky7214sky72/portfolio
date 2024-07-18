@@ -24,7 +24,7 @@ public class WrcCalculator {
    */
   public static void wrcPlus(StatGetResponseDto leagueGetResponseDto, Team team, StatGetResponseDto statGetResponseDto) {
     double wOba = wOba(statGetResponseDto);
-    double wObaSc = statGetResponseDto.getObp() / wOba;
+    double wObaSc = statGetResponseDto.getObp() / wOba * 1.17;
     double leagueWoba = wOba(leagueGetResponseDto);
     double wRaa = ((wOba - leagueWoba) / wObaSc) * statGetResponseDto.getPa();
     double leagueNormalR = (double) leagueGetResponseDto.getR() / leagueGetResponseDto.getPa();
