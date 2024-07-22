@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.portfolio.baseball.domain.Hitter;
+import org.example.portfolio.baseball.domain.HitterEntity;
 import org.example.portfolio.baseball.domain.League;
 
 @Getter
@@ -43,38 +44,26 @@ public class StatGetResponseDto {
   @JsonIgnore
   private int r;
 
-  public void entityMapper(Hitter hitter) {
-    this.teamName = hitter.getTeam().getTeamName();
-    this.name = hitter.getName();
-    this.pa = hitter.getPa();
-    this.ab = hitter.getAb();
-    this.bb = hitter.getBb();
-    this.ib = hitter.getIb();
-    this.hp = hitter.getHp();
-    this.sf = hitter.getSf();
-    this.h = hitter.getH();
-    this.b1 = hitter.getH() - hitter.getB2() - hitter.getB3() - hitter.getHr();
-    this.b2 = hitter.getB2();
-    this.b3 = hitter.getB3();
-    this.hr = hitter.getHr();
-    this.obp = hitter.getObp();
-  }
-
-  public void entityMapper(League league) {
-    this.name = league.getName();
-    this.pa = league.getPa();
-    this.ab = league.getAb();
-    this.bb = league.getBb();
-    this.ib = league.getIb();
-    this.hp = league.getHp();
-    this.sf = league.getSf();
-    this.h = league.getH();
-    this.b1 = league.getH() - league.getB2() - league.getB3() - league.getHr();
-    this.b2 = league.getB2();
-    this.b3 = league.getB3();
-    this.hr = league.getHr();
-    this.obp = league.getObp();
-    this.r = league.getR();
+  public void entityMapper(HitterEntity entity) {
+    this.pa = entity.getPa();
+    this.ab = entity.getAb();
+    this.bb = entity.getBb();
+    this.ib = entity.getIb();
+    this.hp = entity.getHp();
+    this.sf = entity.getSf();
+    this.h = entity.getH();
+    this.b1 = entity.getH() - entity.getB2() - entity.getB3() - entity.getHr();
+    this.b2 = entity.getB2();
+    this.b3 = entity.getB3();
+    this.hr = entity.getHr();
+    this.obp = entity.getObp();
+    if (entity instanceof Hitter hitter) {
+      this.teamName = hitter.getTeam().getTeamName();
+      this.name = hitter.getName();
+    } else if (entity instanceof League league) {
+      this.name = league.getName();
+      this.r = league.getR();
+    }
   }
 
   public void updateWrcPlus(int wrcPlus) {

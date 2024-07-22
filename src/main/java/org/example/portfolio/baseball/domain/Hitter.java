@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "hitter", schema = "baseball")
 @NoArgsConstructor
-public class Hitter {
+public class Hitter extends HitterEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,15 +24,4 @@ public class Hitter {
   @JoinColumn(name = "team_code")
   private Team team;
   private String name;
-  private int pa;
-  private int ab;
-  private int bb;
-  private int ib;
-  private int hp;
-  private int sf;
-  private int h;
-  private int b2;
-  private int b3;
-  private int hr;
-  private double obp;
 }

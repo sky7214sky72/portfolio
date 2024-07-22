@@ -10,20 +10,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "league", schema = "baseball")
 @NoArgsConstructor
-public class League {
+public class League extends HitterEntity {
 
   @Id
   private String name;
-  private int pa;
-  private int ab;
-  private int bb;
-  private int ib;
-  private int hp;
-  private int sf;
-  private int h;
-  private int b2;
-  private int b3;
-  private int hr;
-  private double obp;
   private int r;
 }
