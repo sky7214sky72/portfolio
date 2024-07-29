@@ -27,7 +27,7 @@ public class SecurityConfig {
       "/word/oauth/**", "/word/login/**", "/actuator/prometheus", "/baseball/**", "/static/**",
       "/logs/**", "/swagger-ui/index.html", "/swagger-resources/**", "/resources/**",
       "/resources/**", "/static/**", "/public/**", "/webui/**", "/h2-console/**",
-      "/configuration/**", "/*.html", "/favicon.ico"};
+      "/configuration/**", "/*.html", "/favicon.ico", "/lotto"};
   private final TokenProvider tokenProvider;
   private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
   private final JwtAccessDeniedHandler jwtAccessDeniedHandler;

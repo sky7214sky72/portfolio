@@ -33,6 +33,14 @@ public class SwaggerConfig {
   }
 
   @Bean
+  public GroupedOpenApi getLottoApi() {
+    return GroupedOpenApi.builder()
+        .group("lotto")
+        .pathsToMatch("/lotto/**")
+        .build();
+  }
+
+  @Bean
   public OpenAPI swaggerApi() {
     return new OpenAPI()
         .components(new Components()
