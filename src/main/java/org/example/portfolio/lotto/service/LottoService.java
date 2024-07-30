@@ -53,9 +53,8 @@ public class LottoService implements LottoPort {
       }
     }
 
-    // 번호 조합 생성 및 선택
-    Random random = new Random();
-    int[] bestCombination = generateCombination(commonNumbers, uncommonNumbers, random);
+    // 최적화 알고리즘을 사용하여 조합 찾기
+    int[] bestCombination = findBestCombination(commonNumbers, uncommonNumbers, pastPicks);
     LottoPrediction lottoPrediction = LottoPrediction.builder()
         .first(bestCombination[0])
         .second(bestCombination[1])
@@ -66,6 +65,34 @@ public class LottoService implements LottoPort {
         .bonus(bestCombination[6])
         .build();
     lottoPredictionRepository.save(lottoPrediction);
+    return bestCombination;
+  }
+
+  private int[] findBestCombination(List<Integer> common, List<Integer> uncommon,
+      List<Lotto> pastPicks) {
+    Random random = new Random();
+    int[] bestCombination = null;
+    int bestWinnerCount = Integer.MAX_VALUE;
+
+    // 예를 들어, 유전 알고리즘을 사용한 구현
+    for (int i = 0; i < 10000; i++) {
+      int[] combination = generateCombination(common, uncommon, random);
+      int winnerCount = simulateWinners(combination, pastPicks);
+
+      // 5~10명의 당첨자가 나오는 조합을 찾기 위해 최적화
+      if (winnerCount >= 5 && winnerCount <= 10) {
+        bestCombination = combination;
+        bestWinnerCount = winnerCount;
+        break;  // 목표에 부합하면 조합을 반환
+      }
+
+      // 더 나은 조합을 찾으면 갱신
+      if (Math.abs(winnerCount - 7) < Math.abs(bestWinnerCount - 7)) {
+        bestCombination = combination;
+        bestWinnerCount = winnerCount;
+      }
+    }
+
     return bestCombination;
   }
 
@@ -83,5 +110,22 @@ public class LottoService implements LottoPort {
       combination[index++] = num;
     }
     return combination;
+  }
+
+  private int simulateWinners(int[] combination, List<Lotto> pastPicks) {
+    int count = 0;
+    Set<Integer> combinationSet = new HashSet<>();
+    for (int num : combination) {
+      combinationSet.add(num);
+    }
+    for (Lotto pick : pastPicks) {
+      Set<Integer> pickSet = new HashSet<>(
+          Arrays.asList(pick.getFirst(), pick.getSecond(), pick.getThird(), pick.getForth(),
+              pick.getFifth(), pick.getSixth(), pick.getBonus()));
+      if (combinationSet.containsAll(pickSet)) {
+        count++;
+      }
+    }
+    return count;
   }
 }
