@@ -1,19 +1,8 @@
 package org.example.portfolio.lotto.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.*;
+import java.util.concurrent.*;
+
 import lombok.RequiredArgsConstructor;
 import org.example.portfolio.lotto.application.in.LottoPort;
 import org.example.portfolio.lotto.application.out.LottoPredictionRepository;
@@ -33,16 +22,15 @@ public class LottoService implements LottoPort {
   public int[] getLotto() {
     List<Lotto> pastPicks = lottoRepository.findAll();
 
-    // 번호 선택 빈도 계산
     Map<Integer, Integer> numberCounts = new HashMap<>();
     for (Lotto pick : pastPicks) {
-      int[] numbers = {pick.getFirst(), pick.getSecond(), pick.getThird(), pick.getForth(), pick.getFifth(), pick.getSixth()};
+      int[] numbers = {pick.getFirst(), pick.getSecond(), pick.getThird(), pick.getForth(),
+          pick.getFifth(), pick.getSixth()};
       for (int num : numbers) {
         numberCounts.put(num, numberCounts.getOrDefault(num, 0) + 1);
       }
     }
 
-    // 자주 선택되는 번호와 드물게 선택되는 번호 구분
     List<Map.Entry<Integer, Integer>> entries = new ArrayList<>(numberCounts.entrySet());
     entries.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
 
@@ -57,7 +45,6 @@ public class LottoService implements LottoPort {
       }
     }
 
-    // 목표 당첨자 수 설정
     int targetMinWinners = 5;
     int targetMaxWinners = 10;
 
@@ -65,31 +52,35 @@ public class LottoService implements LottoPort {
     int[] bestCombination = null;
     int bestWinnerCount = Integer.MAX_VALUE;
 
-    // 병렬 처리 설정
     int availableProcessors = Runtime.getRuntime().availableProcessors();
     ExecutorService executorService = Executors.newFixedThreadPool(availableProcessors);
     List<Future<Result>> futures = new ArrayList<>();
 
-    // 병렬 작업 제출
+    int reducedIterations = 10000000; // 예시: 8천만에서 1천만으로 줄임
+
     for (int i = 0; i < availableProcessors; i++) {
-      futures.add(executorService.submit(new LottoTask(commonNumbers, uncommonNumbers, pastPicks, targetMinWinners, targetMaxWinners, 80000000 / availableProcessors, random)));
+      futures.add(executorService.submit(
+          new LottoTask(commonNumbers, uncommonNumbers, pastPicks, targetMinWinners,
+              targetMaxWinners, reducedIterations / availableProcessors, random)));
     }
 
-    // 결과 처리
-    for (Future<Result> future : futures) {
-      try {
-        Result result = future.get();
-        if (result.getWinnerCount() >= targetMinWinners && result.getWinnerCount() <= targetMaxWinners) {
+    try {
+      for (Future<Result> future : futures) {
+        Result result = future.get(10, TimeUnit.MINUTES); // 10분 시간 제한
+        if (result.getWinnerCount() >= targetMinWinners
+            && result.getWinnerCount() <= targetMaxWinners) {
           bestCombination = result.getCombination();
           bestWinnerCount = result.getWinnerCount();
           break;
         }
-      } catch (InterruptedException | ExecutionException e) {
-        e.printStackTrace();
       }
+    } catch (TimeoutException e) {
+      System.out.println("시간 초과로 작업 중단");
+    } catch (InterruptedException | ExecutionException e) {
+      e.printStackTrace();
+    } finally {
+      executorService.shutdown();
     }
-
-    executorService.shutdown();
 
     System.out.println("선택된 조합: " + Arrays.toString(bestCombination));
     System.out.println("예상 당첨자 수: " + bestWinnerCount);
@@ -132,7 +123,9 @@ public class LottoService implements LottoPort {
       combinationSet.add(num);
     }
     for (Lotto pick : pastPicks) {
-      Set<Integer> pickSet = new HashSet<>(Arrays.asList(pick.getFirst(), pick.getSecond(), pick.getThird(), pick.getForth(), pick.getFifth(), pick.getSixth()));
+      Set<Integer> pickSet = new HashSet<>(
+          Arrays.asList(pick.getFirst(), pick.getSecond(), pick.getThird(), pick.getForth(),
+              pick.getFifth(), pick.getSixth()));
       if (combinationSet.equals(pickSet)) {
         count++;
       }
@@ -142,6 +135,7 @@ public class LottoService implements LottoPort {
 }
 
 class LottoTask implements Callable<Result> {
+
   private final List<Integer> commonNumbers;
   private final List<Integer> uncommonNumbers;
   private final List<Lotto> pastPicks;
@@ -150,7 +144,9 @@ class LottoTask implements Callable<Result> {
   private final int iterations;
   private final Random random;
 
-  public LottoTask(List<Integer> commonNumbers, List<Integer> uncommonNumbers, List<Lotto> pastPicks, int targetMinWinners, int targetMaxWinners, int iterations, Random random) {
+  public LottoTask(List<Integer> commonNumbers, List<Integer> uncommonNumbers,
+      List<Lotto> pastPicks, int targetMinWinners, int targetMaxWinners, int iterations,
+      Random random) {
     this.commonNumbers = commonNumbers;
     this.uncommonNumbers = uncommonNumbers;
     this.pastPicks = pastPicks;
@@ -181,6 +177,7 @@ class LottoTask implements Callable<Result> {
 }
 
 class Result {
+
   private final int[] combination;
   private final int winnerCount;
 
