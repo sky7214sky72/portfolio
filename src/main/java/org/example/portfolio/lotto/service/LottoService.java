@@ -66,7 +66,7 @@ public class LottoService implements LottoPort {
 
     try {
       for (Future<Result> future : futures) {
-        Result result = future.get(10, TimeUnit.MINUTES); // 10분 시간 제한
+        Result result = future.get(300, TimeUnit.MINUTES);
         if (result.getWinnerCount() >= targetMinWinners
             && result.getWinnerCount() <= targetMaxWinners) {
           bestCombination = result.getCombination();
