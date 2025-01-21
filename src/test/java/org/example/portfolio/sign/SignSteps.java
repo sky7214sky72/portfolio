@@ -3,8 +3,8 @@ package org.example.portfolio.sign;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.example.portfolio.sign.adapter.in.dto.request.SignInRequest;
-import org.example.portfolio.sign.adapter.in.dto.request.SignUpRequest;
+import org.example.portfolio.sign.domain.dto.request.SignInRequest;
+import org.example.portfolio.sign.domain.dto.request.SignUpRequest;
 import org.springframework.http.MediaType;
 
 public class SignSteps {

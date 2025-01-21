@@ -5,8 +5,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.example.portfolio.ApiTest;
-import org.example.portfolio.sign.adapter.in.dto.request.SignInRequest;
-import org.example.portfolio.sign.adapter.in.dto.request.SignUpRequest;
+import org.example.portfolio.sign.domain.dto.request.SignInRequest;
+import org.example.portfolio.sign.domain.dto.request.SignUpRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 

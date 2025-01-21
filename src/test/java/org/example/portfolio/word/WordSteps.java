@@ -6,7 +6,7 @@ import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.List;
 import org.example.portfolio.ApiTest;
-import org.example.portfolio.word.adapter.in.dto.request.AddWordRequest;
+import org.example.portfolio.word.domain.dto.request.AddWordRequest;
 import org.springframework.http.MediaType;
 
 public class WordSteps extends ApiTest {

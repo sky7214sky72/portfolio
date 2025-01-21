@@ -1,6 +1,6 @@
 package org.example.portfolio.baseball.domain;
 
-import org.example.portfolio.baseball.adapter.in.dto.PitcherGetResponse;
+import org.example.portfolio.baseball.domain.dto.PitcherGetResponse;
 
 public class PitcherStatCalculator {
 

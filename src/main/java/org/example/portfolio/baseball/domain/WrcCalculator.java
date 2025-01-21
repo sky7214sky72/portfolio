@@ -1,6 +1,6 @@
 package org.example.portfolio.baseball.domain;
 
-import org.example.portfolio.baseball.adapter.in.dto.StatGetResponseDto;
+import org.example.portfolio.baseball.domain.dto.StatGetResponseDto;
 
 public class WrcCalculator {
 
