@@ -8,5 +8,7 @@ public interface SignRepository extends JpaRepository<User, Long> {
 
   Optional<User> findByMail(String mail);
 
+  Optional<User> findByMailAndProvider(String mail, String provider);
+
   boolean existsByMail(String mail);
 }

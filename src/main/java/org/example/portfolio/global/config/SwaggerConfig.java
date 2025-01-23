@@ -17,6 +17,14 @@ public class SwaggerConfig {
   private static final String SECURITY_SCHEME_NAME = "authorization";
 
   @Bean
+  public GroupedOpenApi getSignApi() {
+    return GroupedOpenApi.builder()
+        .group("sign")
+        .pathsToMatch("/login/**")
+        .build();
+  }
+
+  @Bean
   public GroupedOpenApi getWordApi() {
     return GroupedOpenApi.builder()
         .group("word")

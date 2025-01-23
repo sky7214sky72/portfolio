@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "회원 가입 및 로그인")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/word")
+@RequestMapping("/login")
 public class SignController {
 
   private final SignService signService;
@@ -37,26 +37,31 @@ public class SignController {
 
   @Operation(summary = "로그인")
   @PostMapping("/sign-in")
-  public ResponseEntity<SignInResponse> signIn(@RequestBody SignInRequest request) throws Exception {
+  public ResponseEntity<SignInResponse> signIn(@RequestBody SignInRequest request) {
     return signService.signIn(request);
   }
 
   @SneakyThrows
   @GetMapping("/oauth/{oauthServerType}")
-  ResponseEntity<Void> redirectAuthCodeRequestUrl(
+  public ResponseEntity<String> redirectAuthCodeRequestUrl(
       @PathVariable OauthServerType oauthServerType,
       HttpServletResponse response
   ) {
     String redirectUrl = oauthService.getAuthCodeRequestUrl(oauthServerType);
     response.sendRedirect(redirectUrl);
-    return ResponseEntity.ok(null);
+    return ResponseEntity.ok().body(redirectUrl);
   }
 
-  @GetMapping("/login/{oauthServerType}")
-  ResponseEntity<SignInResponse> login(
+  @GetMapping("/{oauthServerType}")
+  public ResponseEntity<SignInResponse> login(
       @PathVariable OauthServerType oauthServerType,
       @RequestParam("code") String code
   ) {
     return oauthService.login(oauthServerType, code);
+  }
+
+  @GetMapping("/oauth2/code")
+  public ResponseEntity<SignInResponse> loginOauth(String code) {
+    return oauthService.login(OauthServerType.KAKAO, code);
   }
 }
