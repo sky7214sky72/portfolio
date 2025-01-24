@@ -2,15 +2,17 @@ package org.example.portfolio.global.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class QueryDslConfig {
 
-  @Autowired
-  private EntityManager em;
+  private final EntityManager em;
+
+  public QueryDslConfig(EntityManager em) {
+    this.em = em;
+  }
 
   @Bean
   public JPAQueryFactory jpaQueryFactory() {

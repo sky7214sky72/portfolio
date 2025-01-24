@@ -31,7 +31,7 @@ public class SignController {
 
   @Operation(summary = "회원 가입")
   @PostMapping("/sign-up")
-  public ResponseEntity<Object> signUp(@RequestBody SignUpRequest request) throws Exception {
+  public ResponseEntity<Object> signUp(@RequestBody SignUpRequest request) {
     return signService.signUp(request);
   }
 

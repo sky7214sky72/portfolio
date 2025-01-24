@@ -3,12 +3,10 @@ package org.example.portfolio.global.jwt;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import java.security.Key;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -72,13 +70,13 @@ public class TokenProvider implements InitializingBean {
   }
 
   public String createToken(String userSpecification) {
+    Date expirationDate = Date.from(Instant.now().plus(expirationHours, ChronoUnit.HOURS));
     return Jwts.builder()
         .signWith(key)   // HS512 알고리즘을 사용하여 secretKey를 이용해 서명
         .subject(userSpecification)  // JWT 토큰 제목
         .issuer(issuer)  // JWT 토큰 발급자
         .issuedAt(Timestamp.valueOf(LocalDateTime.now()))    // JWT 토큰 발급 시간
-        .expiration(
-            Date.from(Instant.now().plus(expirationHours, ChronoUnit.HOURS)))    // JWT 토큰 만료 시간
+        .expiration(expirationDate)    // JWT 토큰 만료 시간
         .compact(); // JWT 토큰 생성
   }
 

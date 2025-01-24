@@ -19,8 +19,8 @@ public class PortfolioApplication {
   public static void main(String[] args) {
     final Logger logger = LoggerFactory.getLogger(PortfolioApplication.class);
     SpringApplication.run(PortfolioApplication.class, args);
-    logger.info(
-        "현재 시간 " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+    logger.info("현재 시간 {}",
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
   }
 
   @PostConstruct

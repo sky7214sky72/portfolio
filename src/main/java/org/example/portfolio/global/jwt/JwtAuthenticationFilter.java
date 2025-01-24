@@ -24,7 +24,7 @@ import org.springframework.web.filter.GenericFilterBean;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
-  private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+  private static final Logger jwtLogger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
   private final TokenProvider tokenProvider;
 
   @Override
@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
           user, token, user.getAuthorities());
       authenticated.setDetails(new WebAuthenticationDetails(httpServletRequest));
       SecurityContextHolder.getContext().setAuthentication(authenticated);
-      logger.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", user.getUsername(),
+      jwtLogger.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", user.getUsername(),
           requestUrl);
     }
     filterChain.doFilter(request, response);
