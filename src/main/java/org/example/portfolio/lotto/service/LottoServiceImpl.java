@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LottoServiceImpl implements LottoService {
 
-  private final SlackApiService slackApiService;
   private final LottoRepository lottoRepository;
   private final LottoPredictionRepository lottoPredictionRepository;
 
@@ -54,25 +53,25 @@ public class LottoServiceImpl implements LottoService {
         uncommonNumbers.add(entries.get(i).getKey());
       }
     }
-
+    List<LottoPrediction> lottoPredictions = new ArrayList<>();
     // 최적화 알고리즘을 사용하여 조합 찾기
-    int[] bestCombination = findBestCombination(
-        commonNumbers.stream().sorted(Comparator.naturalOrder()).toList(),
-        uncommonNumbers.stream().sorted(Comparator.naturalOrder()).toList(),
-        pastPicks);
-    LottoPrediction lottoPrediction = LottoPrediction.builder()
-        .first(bestCombination[0])
-        .second(bestCombination[1])
-        .third(bestCombination[2])
-        .forth(bestCombination[3])
-        .fifth(bestCombination[4])
-        .sixth(bestCombination[5])
-        .bonus(bestCombination[6])
-        .build();
-    lottoPredictionRepository.save(lottoPrediction);
-    HashMap<String, String> message = new HashMap<>();
-    message.put("lottoPrediction", lottoPrediction.toString());
-    slackApiService.sendMessage("lotto", message);
+    for (int i = 0; i<5;i++) {
+      int[] bestCombination = findBestCombination(
+          commonNumbers.stream().sorted(Comparator.naturalOrder()).toList(),
+          uncommonNumbers.stream().sorted(Comparator.naturalOrder()).toList(),
+          pastPicks);
+      LottoPrediction lottoPrediction = LottoPrediction.builder()
+          .first(bestCombination[0])
+          .second(bestCombination[1])
+          .third(bestCombination[2])
+          .forth(bestCombination[3])
+          .fifth(bestCombination[4])
+          .sixth(bestCombination[5])
+          .bonus(bestCombination[6])
+          .build();
+      lottoPredictions.add(lottoPrediction);
+    }
+    lottoPredictionRepository.saveAll(lottoPredictions);
   }
 
   private int[] findBestCombination(List<Integer> common, List<Integer> uncommon,
