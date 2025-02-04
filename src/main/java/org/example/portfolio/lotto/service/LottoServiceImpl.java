@@ -53,7 +53,10 @@ public class LottoServiceImpl implements LottoService {
     }
 
     // 최적화 알고리즘을 사용하여 조합 찾기
-    int[] bestCombination = findBestCombination(commonNumbers, uncommonNumbers, pastPicks);
+    int[] bestCombination = findBestCombination(
+        commonNumbers.stream().sorted(Comparator.naturalOrder()).toList(),
+        uncommonNumbers.stream().sorted(Comparator.naturalOrder()).toList(),
+        pastPicks);
     LottoPrediction lottoPrediction = LottoPrediction.builder()
         .first(bestCombination[0])
         .second(bestCombination[1])
@@ -73,15 +76,14 @@ public class LottoServiceImpl implements LottoService {
     int[] bestCombination = null;
     int bestWinnerCount = Integer.MAX_VALUE;
 
-    // 예를 들어, 유전 알고리즘을 사용한 구현
-    for (int i = 0; i < 10000; i++) {
+    // 유전 알고리즘을 사용한 구현
+    for (int i = 0; i < 10000000; i++) {
       int[] combination = generateCombination(common, uncommon, random);
       int winnerCount = simulateWinners(combination, pastPicks);
 
       // 5~10명의 당첨자가 나오는 조합을 찾기 위해 최적화
       if (winnerCount >= 5 && winnerCount <= 10) {
         bestCombination = combination;
-        bestWinnerCount = winnerCount;
         break;  // 목표에 부합하면 조합을 반환
       }
 
