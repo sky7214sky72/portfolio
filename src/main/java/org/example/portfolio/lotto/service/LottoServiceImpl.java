@@ -27,7 +27,7 @@ public class LottoServiceImpl implements LottoService {
 
   @Async
   @Override
-  public int[] getLotto() {
+  public void getLotto() {
     List<Lotto> pastPicks = lottoRepository.findAll();
 
     // 번호 빈도 계산
@@ -73,7 +73,6 @@ public class LottoServiceImpl implements LottoService {
     HashMap<String, String> message = new HashMap<>();
     message.put("lottoPrediction", lottoPrediction.toString());
     slackApiService.sendMessage("lotto", message);
-    return bestCombination;
   }
 
   private int[] findBestCombination(List<Integer> common, List<Integer> uncommon,
