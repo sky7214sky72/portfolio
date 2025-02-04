@@ -2,6 +2,7 @@ package org.example.portfolio.lotto.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import org.example.portfolio.lotto.service.LottoServiceImpl;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class LottoController {
 
   @Operation(summary = "로또번호 맞추기")
   @GetMapping
-  public ResponseEntity<int[]> getPitcherStat() {
-    return ResponseEntity.ok(lottoService.getLotto());
+  public CompletableFuture<ResponseEntity<int[]>> getPitcherStat() {
+    return CompletableFuture.completedFuture(ResponseEntity.ok(lottoService.getLotto()));
   }
 }

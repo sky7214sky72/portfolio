@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableJpaAuditing
-@EnableAsync
+@EnableAsync(proxyTargetClass = true)
 @ConfigurationPropertiesScan
 public class PortfolioApplication {
 
