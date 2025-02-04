@@ -14,15 +14,18 @@ import org.example.portfolio.lotto.repository.LottoPredictionRepository;
 import org.example.portfolio.lotto.repository.LottoRepository;
 import org.example.portfolio.lotto.domain.Lotto;
 import org.example.portfolio.lotto.domain.LottoPrediction;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class LottoServiceImpl implements LottoService {
 
+  private final SlackApiService slackApiService;
   private final LottoRepository lottoRepository;
   private final LottoPredictionRepository lottoPredictionRepository;
 
+  @Async
   @Override
   public int[] getLotto() {
     List<Lotto> pastPicks = lottoRepository.findAll();
@@ -67,6 +70,9 @@ public class LottoServiceImpl implements LottoService {
         .bonus(bestCombination[6])
         .build();
     lottoPredictionRepository.save(lottoPrediction);
+    HashMap<String, String> message = new HashMap<>();
+    message.put("lottoPrediction", lottoPrediction.toString());
+    slackApiService.sendMessage("lotto", message);
     return bestCombination;
   }
 

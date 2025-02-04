@@ -29,4 +29,18 @@ public class LottoPrediction {
   private int fifth;
   private int sixth;
   private int bonus;
+
+  @Override
+  public String toString() {
+    return "LottoPrediction{" +
+        "id=" + id +
+        ", first=" + first +
+        ", second=" + second +
+        ", third=" + third +
+        ", forth=" + forth +
+        ", fifth=" + fifth +
+        ", sixth=" + sixth +
+        ", bonus=" + bonus +
+        '}';
+  }
 }
