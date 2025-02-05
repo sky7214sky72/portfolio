@@ -28,7 +28,6 @@ public class LottoPrediction {
   private int forth;
   private int fifth;
   private int sixth;
-  private int bonus;
 
   @Override
   public String toString() {
@@ -40,7 +39,6 @@ public class LottoPrediction {
         ", forth=" + forth +
         ", fifth=" + fifth +
         ", sixth=" + sixth +
-        ", bonus=" + bonus +
         '}';
   }
 }

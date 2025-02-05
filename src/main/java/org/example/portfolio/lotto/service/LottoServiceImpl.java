@@ -67,7 +67,6 @@ public class LottoServiceImpl implements LottoService {
           .forth(bestCombination[3])
           .fifth(bestCombination[4])
           .sixth(bestCombination[5])
-          .bonus(bestCombination[6])
           .build();
       lottoPredictions.add(lottoPrediction);
     }
@@ -106,10 +105,10 @@ public class LottoServiceImpl implements LottoService {
     while (combinationSet.size() < 4) {
       combinationSet.add(common.get(random.nextInt(common.size())));
     }
-    while (combinationSet.size() < 7) {
+    while (combinationSet.size() < 6) {
       combinationSet.add(uncommon.get(random.nextInt(uncommon.size())));
     }
-    int[] combination = new int[7];
+    int[] combination = new int[6];
     int index = 0;
     for (int num : combinationSet) {
       combination[index++] = num;
