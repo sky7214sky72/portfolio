@@ -2,19 +2,18 @@ package org.example.portfolio.lotto.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.example.portfolio.lotto.domain.LottoPrediction;
 import org.example.portfolio.lotto.repository.LottoPredictionRepository;
 import org.example.portfolio.lotto.repository.LottoRepository;
-import org.example.portfolio.lotto.domain.Lotto;
-import org.example.portfolio.lotto.domain.LottoPrediction;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,112 +23,85 @@ public class LottoServiceImpl implements LottoService {
   private final LottoRepository lottoRepository;
   private final LottoPredictionRepository lottoPredictionRepository;
 
-  @Async
   @Override
-  public void getLotto() {
-    List<Lotto> pastPicks = lottoRepository.findAll();
+  public void getLotto(int weekNumber) {
+    // 1. 과거 데이터 기반 번호 출현 빈도 분석
+    Map<Integer, Long> frequencyMap = calculateNumberFrequency();
 
-    // 번호 빈도 계산
-    Map<Integer, Integer> numberCounts = new HashMap<>();
-    for (Lotto pick : pastPicks) {
-      int[] numbers = {pick.getFirst(), pick.getSecond(), pick.getThird(), pick.getForth(),
-          pick.getFifth(), pick.getSixth()};
-      for (int num : numbers) {
-        numberCounts.put(num, numberCounts.getOrDefault(num, 0) + 1);
-      }
+    // 2. 최근 3회차 출현한 번호는 제외
+    Set<Integer> excludeNumbers = getRecentNumbers();
+
+    // 3. 빈도수 높은 번호에서 제외 번호를 뺀 나머지 번호 추출
+    List<Integer> candidateNumbers = frequencyMap.entrySet().stream()
+        .filter(entry -> !excludeNumbers.contains(entry.getKey()))
+        .sorted(Map.Entry.<Integer, Long>comparingByValue().reversed())
+        .map(Map.Entry::getKey)
+        .collect(Collectors.toList());
+
+    // 4. 패턴 및 빈도수를 기반으로 5세트 생성
+    List<List<Integer>> predictions = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      List<Integer> numbers = generateWinningNumbers(weekNumber, candidateNumbers);
+      predictions.add(numbers);
+      savePrediction(numbers);
     }
-
-    // 자주 선택되는 번호와 드물게 선택되는 번호 구분
-    List<Map.Entry<Integer, Integer>> entries = new ArrayList<>(numberCounts.entrySet());
-    entries.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
-
-    List<Integer> commonNumbers = new ArrayList<>();
-    List<Integer> uncommonNumbers = new ArrayList<>();
-
-    for (int i = 0; i < entries.size(); i++) {
-      if (i < 20) {
-        commonNumbers.add(entries.get(i).getKey());
-      } else {
-        uncommonNumbers.add(entries.get(i).getKey());
-      }
-    }
-    List<LottoPrediction> lottoPredictions = new ArrayList<>();
-    // 최적화 알고리즘을 사용하여 조합 찾기
-    for (int i = 0; i<5;i++) {
-      int[] bestCombination = findBestCombination(
-          commonNumbers.stream().sorted(Comparator.naturalOrder()).toList(),
-          uncommonNumbers.stream().sorted(Comparator.naturalOrder()).toList(),
-          pastPicks);
-      LottoPrediction lottoPrediction = LottoPrediction.builder()
-          .first(bestCombination[0])
-          .second(bestCombination[1])
-          .third(bestCombination[2])
-          .forth(bestCombination[3])
-          .fifth(bestCombination[4])
-          .sixth(bestCombination[5])
-          .build();
-      lottoPredictions.add(lottoPrediction);
-    }
-    lottoPredictionRepository.saveAll(lottoPredictions);
   }
 
-  private int[] findBestCombination(List<Integer> common, List<Integer> uncommon,
-      List<Lotto> pastPicks) {
-    Random random = new Random();
-    int[] bestCombination = null;
-    int bestWinnerCount = Integer.MAX_VALUE;
-
-    // 유전 알고리즘을 사용한 구현
-    for (int i = 0; i < 10000000; i++) {
-      int[] combination = generateCombination(common, uncommon, random);
-      int winnerCount = simulateWinners(combination, pastPicks);
-
-      // 5~10명의 당첨자가 나오는 조합을 찾기 위해 최적화
-      if (winnerCount >= 5 && winnerCount <= 10) {
-        bestCombination = combination;
-        break;  // 목표에 부합하면 조합을 반환
-      }
-
-      // 더 나은 조합을 찾으면 갱신
-      if (Math.abs(winnerCount - 7) < Math.abs(bestWinnerCount - 7)) {
-        bestCombination = combination;
-        bestWinnerCount = winnerCount;
-      }
-    }
-
-    return bestCombination;
+  /**
+   * 생성된 번호를 DB에 저장
+   */
+  private void savePrediction(List<Integer> numbers) {
+    LottoPrediction prediction = new LottoPrediction(numbers);
+    lottoPredictionRepository.save(prediction);
   }
 
-  private int[] generateCombination(List<Integer> common, List<Integer> uncommon, Random random) {
-    Set<Integer> combinationSet = new HashSet<>();
-    while (combinationSet.size() < 4) {
-      combinationSet.add(common.get(random.nextInt(common.size())));
-    }
-    while (combinationSet.size() < 6) {
-      combinationSet.add(uncommon.get(random.nextInt(uncommon.size())));
-    }
-    int[] combination = new int[6];
-    int index = 0;
-    for (int num : combinationSet) {
-      combination[index++] = num;
-    }
-    return combination;
+  /**
+   * 번호 출현 빈도 분석
+   */
+  private Map<Integer, Long> calculateNumberFrequency() {
+    List<Object[]> allNumbers = lottoRepository.findAllWinningNumbers();
+    List<Integer> numberList = allNumbers.stream()
+        .flatMap(Arrays::stream)
+        .map(obj -> (Integer) obj)
+        .toList();
+
+    return numberList.stream()
+        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
   }
 
-  private int simulateWinners(int[] combination, List<Lotto> pastPicks) {
-    int count = 0;
-    Set<Integer> combinationSet = new HashSet<>();
-    for (int num : combination) {
-      combinationSet.add(num);
+  /**
+   * 최근 N회차의 번호 추출
+   */
+  private Set<Integer> getRecentNumbers() {
+    Pageable pageable = PageRequest.of(0, 3);
+    List<Object[]> recentNumbers = lottoRepository.findRecentWinningNumbers(pageable);
+
+    return recentNumbers.stream()
+        .flatMap(Arrays::stream)
+        .map(obj -> (Integer) obj)
+        .collect(Collectors.toSet());
+  }
+
+  /**
+   * 후보 번호에서 패턴을 적용해 당첨 번호 생성
+   */
+  private List<Integer> generateWinningNumbers(int weekNumber, List<Integer> candidateNumbers) {
+    List<Integer> numbers;
+    if (weekNumber % 3 == 0) {
+      numbers = candidateNumbers.subList(15, candidateNumbers.size());
+    } else if (weekNumber % 3 == 1) {
+      numbers = candidateNumbers.subList(0, 15);
+    } else {
+      numbers = candidateNumbers;
     }
-    for (Lotto pick : pastPicks) {
-      Set<Integer> pickSet = new HashSet<>(
-          Arrays.asList(pick.getFirst(), pick.getSecond(), pick.getThird(), pick.getForth(),
-              pick.getFifth(), pick.getSixth(), pick.getBonus()));
-      if (combinationSet.containsAll(pickSet)) {
-        count++;
-      }
-    }
-    return count;
+    return pickRandomNumbers(numbers);
+  }
+
+  /**
+   * 번호 6개 랜덤 선택 및 정렬
+   */
+  private List<Integer> pickRandomNumbers(List<Integer> numberPool) {
+    Collections.shuffle(numberPool);
+    return numberPool.stream().limit(6).sorted().collect(Collectors.toList());
   }
 }

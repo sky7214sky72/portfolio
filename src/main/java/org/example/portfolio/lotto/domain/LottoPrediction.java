@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,4 +42,15 @@ public class LottoPrediction {
         ", sixth=" + sixth +
         '}';
   }
+
+
+  public LottoPrediction(List<Integer> numbers) {
+    this.first = numbers.get(0);
+    this.second = numbers.get(1);
+    this.third = numbers.get(2);
+    this.forth = numbers.get(3);
+    this.fifth = numbers.get(4);
+    this.sixth = numbers.get(5);
+  }
+
 }
