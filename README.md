@@ -1,6 +1,6 @@
-# 영단어 외우기 사이트
+# 개인 사이드 프로젝트들 모아놓은 리포지토리입니다.
 
-예전에 만든 영단어 만들기 사이트 TDD 연습 겸 새롭게 만들어보려고 합니다
+영단어 외우기 사이트, 야구선수 스탯 계산, 로또 번호 예측등 학습 목적으로 개발한것들 모음입니다.
 
 ## 개요
 
@@ -12,26 +12,6 @@
 
 Spring boot, JPA, postgresql, H2 사용 예정
 
-## 패키지 구조
-헥사고날 아키텍처를 사용해 보려고 함
-
-```
-com.example.portfolio
-|-- 도메인(단위 별로 구문 ex:word, user, global)
-    |-- adapter 
-        |-- in
-            |-- controller
-        |-- out/persistence
-            |-- repository(out 포트의 구현체, querydsl 쓸때 사용)
-    |-- application
-        |-- port (인터페이스)
-            |-- in (기능 정의)
-            |-- out (db와 통신 위한 기능 정의 jpa 사용)
-        |-- service (비즈니스 로직 in 포트의 구현체)
-            |-- serviceImpl
-    |-- domain (엔티티)
-        |-- entity.java
-```
 
 ## 데이터베이스 모델 (ERD)
 
