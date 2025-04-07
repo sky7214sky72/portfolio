@@ -2,26 +2,9 @@
 
 영단어 외우기 사이트, 야구선수 스탯 계산, 로또 번호 예측등 학습 목적으로 개발한것들 모음입니다.
 
-## 개요
-
- - 관리자 기능 (영단어 등록, 엑셀 업로드를 이용한 영단어 일괄등록, 영단어 삭제, 영단어 수정)
- - 사용자 기능 (영단어 조회, 외운 영단어 저장, 외운 영단어 삭제, 외운 영단어 통계 조회)
- - 공통 기능 (로그인-카카오, 네이버, 구글, 로그아웃)
-
 ## 프로젝트 사용 기술 스택
 
-Spring boot, JPA, postgresql, H2 사용 예정
-
-
-## 데이터베이스 모델 (ERD)
-
-![스크린샷 2024-01-01 오후 10 09 08](https://github.com/ejoongseok/product-order-service/assets/45224987/d65db7f1-eb1d-4ff1-ae31-5197be3b7c06)
-
-
-## API 명세 (SWAGGER 사용)
-
-<img width="1438" alt="스크린샷 2024-01-19 오후 5 36 33" src="https://github.com/sky7214sky72/portfolio/assets/123547317/8fd2fc18-1a98-4b23-8550-bbc6f89662da">
-<img width="1428" alt="스크린샷 2024-01-19 오후 5 36 43" src="https://github.com/sky7214sky72/portfolio/assets/45224987/fe76c716-db77-49e5-80b4-25d9dbf4a87b">
+Spring boot, JPA, postgresql
 
 ## 모니터링 툴 (prometheus, promtail, loki, grafana)
 ### 서버 로그나 현재 서버 상태 파악 가능한 모니터링 툴 적용
@@ -29,9 +12,105 @@ Spring boot, JPA, postgresql, H2 사용 예정
 ![image](https://github.com/sky7214sky72/portfolio/assets/45224987/e327c16b-4c5b-4670-b6c9-4aade9f88ba2)
 
 
-## 코드 설계 원칙
-### 비즈니스 로직 작성 기준
- - 엔티티 내에서 비즈니스 로직을 작성 하는 경우 : 해당 엔티티내에서만 적용 가능한 로직인 경우 엔티티 내에 비즈니스 로직을 작성
- - 서비스 계층에서 비즈니스 로직을 작성하는 경우 : 다양한 엔티티가 관련된 로직을 만들어야 하는 경우 작성
- - 로직이 간단한 경우 컨트롤러내에서 직접 처리
- - DTO와 엔티티 간의 매핑 : 유틸리티 클래스를 따로 만들어 사용하는게 좋다
+## 프로젝트 다이어그램
+```mermaid
+flowchart TD
+    %% Global Nodes
+    Client("Client (User)"):::external
+    API("PortfolioApplication"):::entry
+    Monitoring("Monitoring Tools (Prometheus, Grafana, Loki)"):::monitoring
+    DB("Database (PostgreSQL / H2)"):::db
+    DevOps("DevOps/Deployment"):::devops
+    Global("Global Config & Security<br/>(Config, Exception, JWT)"):::global
+
+    %% Entry Relationships
+    Client -->|"request"| API
+    API -->|"initializes"| Global
+
+    %% Word Module Subgraph
+    subgraph "Word Module"
+        WordCtrl("WordController"):::controller
+        WordServ("WordService"):::service
+        WordRepo("WordRepository"):::repository
+        WordDom("Word Domain"):::domain
+    end
+    API -->|"routes"| WordCtrl
+    WordCtrl -->|"calls"| WordServ
+    WordServ -->|"persists via"| WordRepo
+    WordServ -->|"uses"| WordDom
+    WordRepo -->|"reads/writes"| DB
+
+    %% Baseball Module Subgraph
+    subgraph "Baseball Module"
+        BaseCtrl("BaseballController"):::controller
+        StatServ("StatService"):::service
+        BaseRepo("BaseballRepository"):::repository
+        BaseDom("Baseball Domain<br/>(OpsCalculator, WrcCalculator)"):::domain
+    end
+    API -->|"routes"| BaseCtrl
+    BaseCtrl -->|"calls"| StatServ
+    StatServ -->|"persists via"| BaseRepo
+    StatServ -->|"calculates with"| BaseDom
+    BaseRepo -->|"reads/writes"| DB
+
+    %% Lotto Module Subgraph
+    subgraph "Lotto Module"
+        LottoCtrl("LottoController"):::controller
+        LottoServ("LottoService"):::service
+        LottoRepo("LottoRepository"):::repository
+        LottoSched("Lotto Scheduler"):::service
+        LottoDom("Lotto Domain"):::domain
+    end
+    API -->|"routes"| LottoCtrl
+    LottoCtrl -->|"calls"| LottoServ
+    LottoServ -->|"persists via"| LottoRepo
+    LottoServ -->|"schedules"| LottoSched
+    LottoServ -->|"processes"| LottoDom
+    LottoRepo -->|"reads/writes"| DB
+
+    %% Sign Module Subgraph
+    subgraph "Sign Module"
+        SignCtrl("SignController"):::controller
+        SignServ("SignService"):::service
+        SignRepo("SignRepository"):::repository
+        OAuthJWT("OAuth/JWT"):::security
+        OAuthProv("OAuth Providers<br/>(Kakao, Naver, Google)"):::external
+    end
+    API -->|"routes"| SignCtrl
+    SignCtrl -->|"calls"| SignServ
+    SignServ -->|"persists via"| SignRepo
+    SignServ -->|"handles"| OAuthJWT
+    OAuthJWT -->|"integrates with"| OAuthProv
+    SignRepo -->|"reads/writes"| DB
+
+    %% Global integration to Modules (cross-cutting concerns)
+    Global ---|"applies to"| WordServ
+    Global ---|"applies to"| StatServ
+    Global ---|"applies to"| LottoServ
+    Global ---|"applies to"| SignServ
+
+    %% Monitoring & DevOps relationships
+    API ---|"metrics"| Monitoring
+    API ---|"CI/CD triggers"| DevOps
+
+    %% Click Events
+    click API "https://github.com/sky7214sky72/portfolio/blob/master/src/main/java/org/example/portfolio/PortfolioApplication.java"
+    click WordCtrl "https://github.com/sky7214sky72/portfolio/tree/master/src/main/java/org/example/portfolio/word"
+    click BaseCtrl "https://github.com/sky7214sky72/portfolio/tree/master/src/main/java/org/example/portfolio/baseball"
+    click LottoCtrl "https://github.com/sky7214sky72/portfolio/tree/master/src/main/java/org/example/portfolio/lotto"
+    click SignCtrl "https://github.com/sky7214sky72/portfolio/tree/master/src/main/java/org/example/portfolio/sign"
+    click Global "https://github.com/sky7214sky72/portfolio/tree/master/src/main/java/org/example/portfolio/global"
+    click DevOps "https://github.com/sky7214sky72/portfolio/blob/master/.github"
+
+    %% Styles
+    classDef entry fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef controller fill:#add8e6,stroke:#000,stroke-width:1px;
+    classDef service fill:#90ee90,stroke:#000,stroke-width:1px;
+    classDef repository fill:#d3d3d3,stroke:#000,stroke-width:1px;
+    classDef domain fill:#ffeb99,stroke:#000,stroke-width:1px;
+    classDef global fill:#ffc0cb,stroke:#000,stroke-width:1px;
+    classDef security fill:#ff9999,stroke:#000,stroke-width:1px;
+    classDef external fill:#e6e6fa,stroke:#000,stroke-width:1px;
+    classDef monitoring fill:#dda0dd,stroke:#000,stroke-width:1px;
+    classDef db fill:#ffe4e1,stroke:#000,stroke-width:1px,stroke-dasharray: 4 2;
+    classDef devops fill:#f0e68c,stroke:#000,stroke-width:1px;
