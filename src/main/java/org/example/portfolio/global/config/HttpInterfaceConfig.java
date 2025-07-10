@@ -1,5 +1,6 @@
 package org.example.portfolio.global.config;
 
+import org.example.portfolio.sign.infra.google.client.GoogleApiClient;
 import org.example.portfolio.sign.infra.kakao.client.KakaoApiClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,11 @@ public class HttpInterfaceConfig {
   @Bean
   public KakaoApiClient kakaoApiClient() {
     return createHttpInterface(KakaoApiClient.class);
+  }
+
+  @Bean
+  public GoogleApiClient googleApiClient() {
+    return createHttpInterface(GoogleApiClient.class);
   }
 
   private <T> T createHttpInterface(Class<T> clazz) {
